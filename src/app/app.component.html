@@ -1,0 +1,22 @@
+<div class = "ui container">
+  <h1>Matf Overflow</h1>
+  <hr>
+
+  <div style = "background-color: rgb(194, 221, 240);" class="ui top attached tabular menu">
+    <a style = "font-size: large;" class="item" data-tab="dtQuestions">Questions</a>
+    <a style = "font-size: large;" class="item" data-tab="dtAddNewQuestion">Add new question</a>
+    <a style = "font-size: large;" class="right item" data-tab="dtUserProfile">User profile</a>
+  </div>
+
+  <div class="ui bottom attached tab segment" data-tab="dtQuestions">
+    <app-question-list [questions]="questions"></app-question-list>
+  </div>
+
+  <div class="ui bottom attached tab segment" data-tab="dtAddNewQuestion">
+    <app-create-question (questionCreated)="onQuestionCreated($event)"></app-create-question>
+  </div>
+
+  <div class="ui bottom attached tab segment" data-tab="dtUserProfile">
+    <app-user-profile></app-user-profile>
+  </div>
+</div>
