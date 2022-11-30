@@ -1,0 +1,16 @@
+<h3>Ask a public question</h3>
+
+<form class="ui form">
+    <div class="required fluid field">
+        <label>Title</label>
+        <p>Be specific and imagine you're asking a question to another person.</p>
+        <input type="text" name="title" #inputTitle>
+    </div>
+
+    <div class="required fluid field">
+        <label>Description</label>
+        <textarea name="description" #inputDescription></textarea>
+    </div>
+
+    <button class="ui button" type="button" (click)="addNewQuestion()" style = "background-color: rgb(194, 221, 240); margin: 10px;">Post your question</button>
+</form>
