@@ -80,3 +80,22 @@
   * `204 No Content` - If a question is deleted successfully.
   * `401 Unauthorized` - If a user that is not the author of a question tries to delete it.
   * `404 Not Found` - If a question with given id is not found.
+
+### POST /questions/{id}/vote
+
+* **Description**: Gives `+1` or `-1` votes to a question.
+
+* Request body:
+
+```json
+{
+  "id": "uuid",
+  "votes": "upvote" or "downvote"
+}
+```
+
+* Response:
+  * `200 Ok` - If a vote has been successfully submitted.
+  * `400 Bad Request` - If request body contains invalid information.
+  * `401 Unauthorized` - If a user that is not logged in tries to vote on a question.
+  * `404 Not Found` - If a question with given id is not found.
