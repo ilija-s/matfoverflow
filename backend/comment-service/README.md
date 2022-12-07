@@ -6,7 +6,7 @@
 |------|------|
 | comment_id | uuid |
 | question_id | uuid |
-| author_id | string |
+| author_id | uuid |
 | content | string |
 | votes | int |
 | upvotes | [uuid] |
@@ -23,7 +23,7 @@
 * **Description**: Returns a list of all comments on selected question.
 
 * Response:
-	* `200 OK`, `[Comment]` - Returns a list of comments.
+	* `200 OK`, `[Comment]` - Returns the list of comments.
     * `404 Not Found`       - If the question with give id does not exist.
 
 ### POST /comments/{questionId}
@@ -69,7 +69,7 @@
 
 * Response:
     * `204 No Content`    - If the comments are deleted successfully.
-    * `401 Unauthorized`  - If a user that is not the author of a question tries to delete it.
+    * `401 Unauthorized`  - If user is not a moderator or if request is not sent by question service.
     * `404 Not Found`     - If the comment with given id does not exist.
 
 ### DELETE /comments/{questionId}/{commentId}
@@ -78,7 +78,7 @@
 
 * Response:
     * `204 No Content`    - If the comment is deleted successfully.
-    * `401 Unauthorized`  - If a user that is not the author of a question tries to delete it.
+    * `401 Unauthorized`  - If a user that is not the author of the comment nor moderator tries to delete it.
     * `404 Not Found`     - If the comment with given id does not exist.
 
 ### PUT /comment/{commentId}/upvote
