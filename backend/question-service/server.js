@@ -1,10 +1,17 @@
 const express = require("express");
-const bodyParser = require("body-parser")
+const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
 
 const questionRouter = require("./routes/question");
 
 const PORT = 4000;
 const HOST_NAME = "localhost";
+const DB_NAME = "QuestionsDB";
+
+mongoose.connect("mongodb://localhost:27017/${DB_NAME}", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+});
 
 const app = express();
 app.use(express.static("client"));
