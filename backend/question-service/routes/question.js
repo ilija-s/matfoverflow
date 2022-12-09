@@ -45,15 +45,24 @@ questionsRoute.put("/:id", (req, res) => {
     return "PUT REQUEST";
 })
 
-questionsRoute.delete("/:id", (req, res) => {
+questionsRoute.delete("/:id", async (req, res) => {
     const id = req.params.id;
-    return "DELETE REQUEST";
+    await QuestionModel.deleteQuestionById(id);
+
+    res.status(204).json("");
 })
 
-questionsRoute.post("/:id/vote", (req, res) => {
+questionsRoute.put("/:id/vote", async (req, res) => {
     const id = req.params.id;
-    const body = req.body;
-    return "POST REQUEST on questions/" + id + "/vote";
+    const { user, vote } = req.body;
+
+    const successfullyUpdatedVoteCount = await QuestionModel.updateVotes(id, user, vote.toLowerCase());
+
+    if (!successfullyUpdatedVoteCount) {
+        res.status(400).json("User could not update the vote.");
+    } else {
+        res.json("Successfully updated vote count.");
+    }
 })
 
 module.exports = questionsRoute

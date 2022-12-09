@@ -73,3 +73,51 @@ module.exports.addNewQuestion = async function (question) {
 
     return savedQuestion;
 };
+
+module.exports.deleteQuestionById = async function (id) {
+    await QuestionModel.deleteOne({ _id: id });
+};
+
+module.exports.updateVotes = async function (questionId, user, vote) {
+    let question = await QuestionModel.findById(questionId).exec();
+    const UPVOTE = "upvote";
+    const DOWNVOTE = "downvote";
+
+    const userAlreadyUpvoted = question.upvoters.filter(username => username === user).length > 0;
+    const userAlreadyDownvoted = question.downvoters.filter(username => username === user).length > 0;
+
+    switch (vote) {
+        case UPVOTE:
+            if (userAlreadyDownvoted) {
+                await QuestionModel.updateOne(
+                    { _id: questionId }, 
+                    { $inc: { votes: 2}, $push: { upvoters: user }, $pull: { downvoters: user } }).exec();
+            } else if (!(userAlreadyUpvoted || userAlreadyDownvoted)) {
+                await QuestionModel.updateOne(
+                    { _id: questionId }, 
+                    { $inc: { votes: 1}, $push: { upvoters: user } }).exec();
+            } else {
+                await QuestionModel.updateOne(
+                    { _id: questionId }, 
+                    { $inc: { votes: -1}, $pull: { upvoters: user } }).exec();
+            }
+            return true;
+        case DOWNVOTE:
+            if (userAlreadyUpvoted) {
+                await QuestionModel.updateOne(
+                    { _id: questionId }, 
+                    { $inc: { votes: -2}, $push: { downvoters: user }, $pull: { upvoters: user } }).exec();
+            } else if (!(userAlreadyUpvoted || userAlreadyDownvoted)) {
+                await QuestionModel.updateOne(
+                    { _id: questionId }, 
+                    { $inc: { votes: -1}, $push: { downvoters: user } }).exec();
+            } else {
+                await QuestionModel.updateOne(
+                    { _id: questionId }, 
+                    { $inc: { votes: 1}, $pull: { downvoters: user } }).exec();
+            }
+            return true;
+        default:
+            return false;
+    }
+};
