@@ -6,9 +6,8 @@ const questionRouter = require("./routes/question");
 
 const PORT = 4000;
 const HOST_NAME = "localhost";
-const DB_NAME = "QuestionsDB";
 
-mongoose.connect("mongodb://localhost:27017/${DB_NAME}", {
+mongoose.connect("mongodb://localhost:27017/QuestionsDB", {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });
@@ -16,6 +15,7 @@ mongoose.connect("mongodb://localhost:27017/${DB_NAME}", {
 const app = express();
 app.use(express.static("client"));
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json({}));
 
 app.use("/questions", questionRouter);
 
