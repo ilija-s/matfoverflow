@@ -26,7 +26,7 @@
     * `200 OK`, `Profile data` - Return profile information
     * `404 Not found` - Account doesn't exist
 
-### POST /account/{user_id}
+### POST /account
 
 * Creates a new profile with given user_id
 
