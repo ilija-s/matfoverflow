@@ -18,16 +18,24 @@
 
     <div class="twelve wide column ">
         <button class = "ui button" style = "background-color: rgb(194, 221, 240); margin: 10px;" (click)="enableChangeFields()">Change profile info</button>
-        <form class = "ui form" *ngIf="showChangeFields; else changeUserInfo">
+        <form [formGroup]="userForm" (ngSubmit)="onUserFormSubmit()" class="ui form" *ngIf="showChangeFields; else changeUserInfo">
+            <div>
+                <label>Username</label>
+                <input type="text" formControlName="username">
+            </div>
             <div>
                 <label>Name</label>
-                <input type = "text" [value]="user.name" (change)="onChangeName($event)">
+                <input type = "text" formControlname="name">
             </div>
             <div>
                 <label>Email</label>
-                <input type="email" [value]="user.email" (change)="onChangeEmail($event)">
+                <input type="email" formControlname="email">
             </div>
-            <button class = "ui button" style = "background-color: rgb(194, 221, 240); margin: 10px;" type = "button" (click)="disableChangeFields()">Save changes</button>
+            <div class = "form-group">
+                <label>Choose a profile picture</label>
+                <input type="file" formControlname="imgUrl">
+            </div>
+            <button class = "ui button" type="submit" style = "background-color: rgb(194, 221, 240); margin: 10px;">Save changes</button>
         </form>
 
         <ng-template #changeUserInfo>

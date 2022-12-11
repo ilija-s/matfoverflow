@@ -8,7 +8,8 @@ import { Question } from '../models/question.model';
 })
 export class QuestionInfoComponent implements OnInit {
   
-  @Input() question: Question | undefined;
+  @Input()
+  question!: Question;
   
   constructor() { }
   
