@@ -29,8 +29,15 @@
 * **Description**: Returns a list of the most recent questions, in the future could be implemented to return most relevant questions.
 
 * Response:
-	* `200 OK`, `Question` - Returns a question with comments.
+	* `200 OK`, `Question` - Returns a question.
   * `404 Not Found` - Returns `Not Found` if the question with given id does not exist.
+
+### GET /questions/tags/{tag}
+
+* **Description**: Returns a list of the most recent questions with given tag in the future could be implemented to return most relevant questions.
+
+* Response:
+	* `200 OK`, `Question` - Returns a list of questions.
 
 ### POST /questions
 
