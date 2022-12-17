@@ -1,15 +1,21 @@
 const express = require('express');
+const {getComments, createComment} = require('../models/comments');
 
 const router = express.Router();
 
-router.get('/:id', (req, res) => {
-    const id = req.params.id;
-    const comment = {
-		id,
-        answer: "Thank you very much, I get it now. ✨",
-        author: "Igor Paunovic"
-    };
-    res.json(comment);
+router.get('/:questionId', async (req, res) => {
+    const questionId = req.params.questionId;
+    const comments = await getComments(questionId);
+    res.status(200).json(comments);
+});
+
+router.post('/:questionId', async (req, res) => {
+    const questionId = req.params.questionId;
+    const authorId = req.body.authorId;
+    const content = req.body.content;
+    const comment = await createComment(questionId, authorId, content)
+
+    res.status(200).json(comment);
 });
 
 module.exports = router;
