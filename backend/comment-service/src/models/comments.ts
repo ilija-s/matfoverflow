@@ -35,12 +35,12 @@ const commentSchema = new mongoose.Schema({
 
 const commentModel = mongoose.model('Comments', commentSchema);
 
-module.exports.getComments = async function (questionId){
-    let comments = await commentModel.find({questionId : mongoose.Types.ObjectId(zquestionId)});
+export async function getComments(questionId : String){
+    let comments = await commentModel.find({questionId : mongoose.Types.ObjectId(questionId)});
     return comments;
 }
 
-module.exports.createComment = async function (questionId, authorId, content) {
+export async function createComment(questionId : String, authorId : String, content : String) {
     const newComment = new commentModel();
     newComment._id = new mongoose.Types.ObjectId();
     newComment.questionId = questionId;

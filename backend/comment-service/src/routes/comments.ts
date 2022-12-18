@@ -18,4 +18,4 @@ router.post('/:questionId', async (req, res) => {
     res.status(200).json(comment);
 });
 
-module.exports = router;
+export = router;
