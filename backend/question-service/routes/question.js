@@ -40,9 +40,26 @@ questionsRoute.post("/", async (req, res) => {
     res.json(createdQuestion);
 })
 
-questionsRoute.put("/:id", (req, res) => {
-    const id = req.params.id;
-    return "PUT REQUEST";
+questionsRoute.put("/:id", async (req, res) => {
+    const { id, title, description, tags } = req.body;
+    if (!id || !title || !description || !tags) {
+        res.status(400).json("Information provided is not valid!");
+        return;
+    }
+
+    const question = await QuestionModel.getQuestionById(id);
+
+    if (question === null) {
+        res.status(404).json("Question not found!");
+    }
+
+    question.title = title;
+    question.description = description;
+    question.tags = tags;
+
+    const createdQuestion = await QuestionModel.addNewQuestion(question);
+
+    res.json(createdQuestion);
 })
 
 questionsRoute.delete("/:id", async (req, res) => {
