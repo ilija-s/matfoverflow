@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 const express = require('express');
-const { getComments, createComment } = require('../models/comments');
+const { getComments, createComment, updateComment } = require('../models/comments');
 const router = express.Router();
 router.get('/:questionId', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const questionId = req.params.questionId;
@@ -17,10 +17,29 @@ router.get('/:questionId', (req, res) => __awaiter(void 0, void 0, void 0, funct
     res.status(200).json(comments);
 }));
 router.post('/:questionId', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    if (!req.body.authorId || !req.body.content) {
+        res.status(400).json({
+            "message": "All fields required"
+        });
+        return;
+    }
     const questionId = req.params.questionId;
     const authorId = req.body.authorId;
     const content = req.body.content;
     const comment = yield createComment(questionId, authorId, content);
+    res.status(200).json(comment);
+}));
+router.put('/:commentId', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    if (!req.body.authorId || !req.body.content) {
+        res.status(400).json({
+            "message": "All fields required"
+        });
+        return;
+    }
+    const commentId = req.params.commentId;
+    const authorId = req.body.authorId;
+    const content = req.body.content;
+    const comment = yield updateComment(commentId, authorId, content);
     res.status(200).json(comment);
 }));
 module.exports = router;

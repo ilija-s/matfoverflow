@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createComment = exports.getComments = void 0;
+exports.updateComment = exports.createComment = exports.getComments = void 0;
 const mongoose = require("mongoose");
 const commentSchema = new mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
@@ -63,4 +63,14 @@ function createComment(questionId, authorId, content) {
     });
 }
 exports.createComment = createComment;
+;
+function updateComment(commentId, authorId, content) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const comment = yield commentModel.findById(commentId);
+        comment.content = content;
+        const commentFromDB = comment.save();
+        return commentFromDB;
+    });
+}
+exports.updateComment = updateComment;
 ;

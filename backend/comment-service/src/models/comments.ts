@@ -50,3 +50,12 @@ export async function createComment(questionId : String, authorId : String, cont
     const commentFromDB = await newComment.save();
     return commentFromDB;
 };
+
+export async function updateComment(commentId : String, authorId : String, content : String) {
+    const comment = await commentModel.findById(commentId);
+    comment.content = content;
+
+    const commentFromDB = comment.save();
+    return commentFromDB;
+};
+

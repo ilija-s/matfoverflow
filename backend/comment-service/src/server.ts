@@ -16,10 +16,7 @@ app.use(urlencoded({extended: false}));
 app.use(json());
 //app.use(cors());
 
-mongoose.connect('mongodb://localhost:27017/Comments', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-} as ConnectOptions);
+mongoose.connect('mongodb://localhost:27017/Comments');
 
 app.use('/comments', commentRouter);
 
