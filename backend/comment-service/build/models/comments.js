@@ -8,17 +8,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateComment = exports.createComment = exports.getComments = void 0;
-const mongoose = require("mongoose");
-const commentSchema = new mongoose.Schema({
-    _id: mongoose.Schema.Types.ObjectId,
+exports.downvote = exports.upvote = exports.deleteComment = exports.deleteAllComments = exports.updateComment = exports.createComment = exports.getComments = void 0;
+const mongoose_1 = __importDefault(require("mongoose"));
+const commentSchema = new mongoose_1.default.Schema({
+    _id: mongoose_1.default.Schema.Types.ObjectId,
     questionId: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: mongoose_1.default.Schema.Types.ObjectId,
         required: true
     },
     authorId: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: mongoose_1.default.Schema.Types.ObjectId,
         required: true
     },
     content: {
@@ -31,22 +34,20 @@ const commentSchema = new mongoose.Schema({
         default: 0
     },
     upvotes: {
-        type: [mongoose.Schema.Types.ObjectId],
+        type: [mongoose_1.default.Schema.Types.ObjectId],
         required: true,
         default: []
     },
     downvotes: {
-        type: [mongoose.Schema.Types.ObjectId],
+        type: [mongoose_1.default.Schema.Types.ObjectId],
         required: true,
         default: []
-    },
-    creationDate: mongoose.Schema.Types.Date,
-    modifiedDate: mongoose.Schema.Types.Date
-});
-const commentModel = mongoose.model('Comments', commentSchema);
+    }
+}, { timestamps: true });
+const commentModel = mongoose_1.default.model('Comments', commentSchema);
 function getComments(questionId) {
     return __awaiter(this, void 0, void 0, function* () {
-        let comments = yield commentModel.find({ questionId: mongoose.Types.ObjectId(questionId) });
+        let comments = yield commentModel.find({ questionId: questionId });
         return comments;
     });
 }
@@ -54,11 +55,11 @@ exports.getComments = getComments;
 function createComment(questionId, authorId, content) {
     return __awaiter(this, void 0, void 0, function* () {
         const newComment = new commentModel();
-        newComment._id = new mongoose.Types.ObjectId();
-        newComment.questionId = questionId;
-        newComment.authorId = authorId;
+        newComment._id = new mongoose_1.default.Types.ObjectId();
+        newComment.questionId = new mongoose_1.default.Types.ObjectId(questionId);
+        newComment.authorId = new mongoose_1.default.Types.ObjectId(authorId);
         newComment.content = content;
-        const commentFromDB = yield newComment.save();
+        const commentFromDB = yield newComment.save({ timestamps: true });
         return commentFromDB;
     });
 }
@@ -73,4 +74,70 @@ function updateComment(commentId, authorId, content) {
     });
 }
 exports.updateComment = updateComment;
+;
+function deleteAllComments(questionId) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return yield commentModel.deleteMany({ questionId: questionId });
+    });
+}
+exports.deleteAllComments = deleteAllComments;
+function deleteComment(commentId) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return yield commentModel.findByIdAndDelete({ _id: commentId });
+    });
+}
+exports.deleteComment = deleteComment;
+;
+function upvote(commentId, userId) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const comment = yield commentModel.findById(commentId);
+        const userObjId = new mongoose_1.default.Types.ObjectId(userId);
+        let upvotes = 0;
+        let index = comment.upvotes.indexOf(userObjId);
+        if (index == -1) {
+            comment.upvotes.push(userObjId);
+            upvotes++;
+        }
+        else {
+            throw new Error("This user has already upvoted");
+        }
+        index = comment.downvotes.indexOf(userObjId);
+        if (index != -1) {
+            // User has previously downvoted
+            comment.downvotes.splice(index, 1);
+            upvotes++;
+        }
+        comment.votes += upvotes;
+        const commentFromDB = yield comment.save({ timestamps: true });
+        return commentFromDB.votes;
+    });
+}
+exports.upvote = upvote;
+;
+function downvote(commentId, userId) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const comment = yield commentModel.findById(commentId);
+        const userObjId = new mongoose_1.default.Types.ObjectId(userId);
+        let downvotes = 0;
+        let index = comment.downvotes.indexOf(userObjId);
+        if (index == -1) {
+            comment.downvotes.push(userObjId);
+            downvotes++;
+        }
+        else {
+            // User has already downvoted
+            throw new Error("This user has already downvoted");
+        }
+        index = comment.upvotes.indexOf(userObjId);
+        if (index != -1) {
+            // User has previously upvoted
+            comment.upvotes.splice(index, 1);
+            downvotes++;
+        }
+        comment.votes -= downvotes;
+        const commentFromDB = yield comment.save({ timestamps: true });
+        return commentFromDB.votes;
+    });
+}
+exports.downvote = downvote;
 ;
