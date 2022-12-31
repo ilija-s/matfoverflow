@@ -33,12 +33,12 @@ const commentSchema = new mongoose.Schema({
 
 const commentModel = mongoose.model('Comments', commentSchema);
 
-export async function getComments(questionId : string){
+export async function loadComments(questionId : string){
     let comments = await commentModel.find({questionId : questionId});
     return comments;
 }
 
-export async function createComment(questionId : string, authorId : string, content : string) {
+export async function saveComment(questionId : string, authorId : string, content : string) {
     const newComment = new commentModel();
     newComment._id = new mongoose.Types.ObjectId();
     newComment.questionId = new mongoose.Types.ObjectId(questionId);
@@ -65,7 +65,7 @@ export async function deleteComment(commentId : string) {
     return await commentModel.findByIdAndDelete({_id : commentId});
 };
 
-export async function upvote(commentId: string, userId: string) {
+export async function updateUpvotes(commentId: string, userId: string) {
 
         const comment = await commentModel.findById(commentId);
         const userObjId = new mongoose.Types.ObjectId(userId);
@@ -92,7 +92,7 @@ export async function upvote(commentId: string, userId: string) {
         return commentFromDB.votes;
 };
 
-export async function downvote(commentId: string, userId: string) {
+export async function updateDownvotes(commentId: string, userId: string) {
 
     const comment = await commentModel.findById(commentId);
     const userObjId = new mongoose.Types.ObjectId(userId);

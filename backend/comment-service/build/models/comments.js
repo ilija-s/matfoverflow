@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.downvote = exports.upvote = exports.deleteComment = exports.deleteAllComments = exports.updateComment = exports.createComment = exports.getComments = void 0;
+exports.updateDownvotes = exports.updateUpvotes = exports.deleteComment = exports.deleteAllComments = exports.updateComment = exports.saveComment = exports.loadComments = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
 const commentSchema = new mongoose_1.default.Schema({
     _id: mongoose_1.default.Schema.Types.ObjectId,
@@ -45,14 +45,14 @@ const commentSchema = new mongoose_1.default.Schema({
     }
 }, { timestamps: true });
 const commentModel = mongoose_1.default.model('Comments', commentSchema);
-function getComments(questionId) {
+function loadComments(questionId) {
     return __awaiter(this, void 0, void 0, function* () {
         let comments = yield commentModel.find({ questionId: questionId });
         return comments;
     });
 }
-exports.getComments = getComments;
-function createComment(questionId, authorId, content) {
+exports.loadComments = loadComments;
+function saveComment(questionId, authorId, content) {
     return __awaiter(this, void 0, void 0, function* () {
         const newComment = new commentModel();
         newComment._id = new mongoose_1.default.Types.ObjectId();
@@ -63,7 +63,7 @@ function createComment(questionId, authorId, content) {
         return commentFromDB;
     });
 }
-exports.createComment = createComment;
+exports.saveComment = saveComment;
 ;
 function updateComment(commentId, authorId, content) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -88,7 +88,7 @@ function deleteComment(commentId) {
 }
 exports.deleteComment = deleteComment;
 ;
-function upvote(commentId, userId) {
+function updateUpvotes(commentId, userId) {
     return __awaiter(this, void 0, void 0, function* () {
         const comment = yield commentModel.findById(commentId);
         const userObjId = new mongoose_1.default.Types.ObjectId(userId);
@@ -112,9 +112,9 @@ function upvote(commentId, userId) {
         return commentFromDB.votes;
     });
 }
-exports.upvote = upvote;
+exports.updateUpvotes = updateUpvotes;
 ;
-function downvote(commentId, userId) {
+function updateDownvotes(commentId, userId) {
     return __awaiter(this, void 0, void 0, function* () {
         const comment = yield commentModel.findById(commentId);
         const userObjId = new mongoose_1.default.Types.ObjectId(userId);
@@ -139,5 +139,5 @@ function downvote(commentId, userId) {
         return commentFromDB.votes;
     });
 }
-exports.downvote = downvote;
+exports.updateDownvotes = updateDownvotes;
 ;
