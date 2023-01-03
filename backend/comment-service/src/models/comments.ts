@@ -33,12 +33,20 @@ const commentSchema = new mongoose.Schema({
 
 const commentModel = mongoose.model('Comments', commentSchema);
 
-export async function loadComments(questionId : string){
+class MyError extends Error {
+    private statusCode: number;
+    constructor(statusCode: number, message: string){
+        super(message);
+        this.statusCode = statusCode;
+    }
+}
+
+export async function _getComments(questionId : string){
     let comments = await commentModel.find({questionId : questionId});
     return comments;
 }
 
-export async function saveComment(questionId : string, authorId : string, content : string) {
+export async function _createComment(questionId : string, authorId : string, content : string) {
     const newComment = new commentModel();
     newComment._id = new mongoose.Types.ObjectId();
     newComment.questionId = new mongoose.Types.ObjectId(questionId);
@@ -49,25 +57,31 @@ export async function saveComment(questionId : string, authorId : string, conten
     return commentFromDB;
 };
 
-export async function updateComment(commentId : string, authorId : string, content : string) {
+export async function _updateComment(commentId : string, authorId : string, content : string) {
     const comment = await commentModel.findById(commentId);
+    if (!comment) {
+        throw new MyError(404,`Comment with ID ${commentId} is not found`);
+    }
     comment.content = content;
 
     const commentFromDB = comment.save();
     return commentFromDB;
 };
 
-export async function deleteAllComments(questionId : string) {
+export async function _deleteComments(questionId : string) {
     return await commentModel.deleteMany({questionId : questionId});
 }
 
-export async function deleteComment(commentId : string) {
+export async function _deleteComment(commentId : string) {
     return await commentModel.findByIdAndDelete({_id : commentId});
 };
 
-export async function updateUpvotes(commentId: string, userId: string) {
+export async function _upvote(commentId: string, userId: string) {
 
         const comment = await commentModel.findById(commentId);
+        if (!comment) {
+            throw new MyError(404,`Comment with ID ${commentId} is not found`);
+        }
         const userObjId = new mongoose.Types.ObjectId(userId);
 
         let upvotes : number = 0;
@@ -76,7 +90,7 @@ export async function updateUpvotes(commentId: string, userId: string) {
             comment.upvotes.push(userObjId);
             upvotes++;
         } else {
-            throw new Error("This user has already upvoted");
+            throw new MyError(400, "This user has already upvoted");
         }
 
         index = comment.downvotes.indexOf(userObjId);
@@ -92,9 +106,12 @@ export async function updateUpvotes(commentId: string, userId: string) {
         return commentFromDB.votes;
 };
 
-export async function updateDownvotes(commentId: string, userId: string) {
+export async function _downvote(commentId: string, userId: string) {
 
     const comment = await commentModel.findById(commentId);
+    if (!comment) {
+        throw new MyError(404, `Comment with ID ${commentId} is not found`);
+    }
     const userObjId = new mongoose.Types.ObjectId(userId);
 
     let downvotes : number = 0;
@@ -103,8 +120,7 @@ export async function updateDownvotes(commentId: string, userId: string) {
         comment.downvotes.push(userObjId);
         downvotes++;
     } else {
-        // User has already downvoted
-        throw new Error("This user has already downvoted");
+        throw new MyError(400, "This user has already downvoted");
     }
 
     index = comment.upvotes.indexOf(userObjId);

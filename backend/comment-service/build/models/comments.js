@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateDownvotes = exports.updateUpvotes = exports.deleteComment = exports.deleteAllComments = exports.updateComment = exports.saveComment = exports.loadComments = void 0;
+exports._downvote = exports._upvote = exports._deleteComment = exports._deleteComments = exports._updateComment = exports._createComment = exports._getComments = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
 const commentSchema = new mongoose_1.default.Schema({
     _id: mongoose_1.default.Schema.Types.ObjectId,
@@ -45,14 +45,20 @@ const commentSchema = new mongoose_1.default.Schema({
     }
 }, { timestamps: true });
 const commentModel = mongoose_1.default.model('Comments', commentSchema);
-function loadComments(questionId) {
+class MyError extends Error {
+    constructor(statusCode, message) {
+        super(message);
+        this.statusCode = statusCode;
+    }
+}
+function _getComments(questionId) {
     return __awaiter(this, void 0, void 0, function* () {
         let comments = yield commentModel.find({ questionId: questionId });
         return comments;
     });
 }
-exports.loadComments = loadComments;
-function saveComment(questionId, authorId, content) {
+exports._getComments = _getComments;
+function _createComment(questionId, authorId, content) {
     return __awaiter(this, void 0, void 0, function* () {
         const newComment = new commentModel();
         newComment._id = new mongoose_1.default.Types.ObjectId();
@@ -63,34 +69,40 @@ function saveComment(questionId, authorId, content) {
         return commentFromDB;
     });
 }
-exports.saveComment = saveComment;
+exports._createComment = _createComment;
 ;
-function updateComment(commentId, authorId, content) {
+function _updateComment(commentId, authorId, content) {
     return __awaiter(this, void 0, void 0, function* () {
         const comment = yield commentModel.findById(commentId);
+        if (!comment) {
+            throw new MyError(404, `Comment with ID ${commentId} is not found`);
+        }
         comment.content = content;
         const commentFromDB = comment.save();
         return commentFromDB;
     });
 }
-exports.updateComment = updateComment;
+exports._updateComment = _updateComment;
 ;
-function deleteAllComments(questionId) {
+function _deleteComments(questionId) {
     return __awaiter(this, void 0, void 0, function* () {
         return yield commentModel.deleteMany({ questionId: questionId });
     });
 }
-exports.deleteAllComments = deleteAllComments;
-function deleteComment(commentId) {
+exports._deleteComments = _deleteComments;
+function _deleteComment(commentId) {
     return __awaiter(this, void 0, void 0, function* () {
         return yield commentModel.findByIdAndDelete({ _id: commentId });
     });
 }
-exports.deleteComment = deleteComment;
+exports._deleteComment = _deleteComment;
 ;
-function updateUpvotes(commentId, userId) {
+function _upvote(commentId, userId) {
     return __awaiter(this, void 0, void 0, function* () {
         const comment = yield commentModel.findById(commentId);
+        if (!comment) {
+            throw new MyError(404, `Comment with ID ${commentId} is not found`);
+        }
         const userObjId = new mongoose_1.default.Types.ObjectId(userId);
         let upvotes = 0;
         let index = comment.upvotes.indexOf(userObjId);
@@ -99,7 +111,7 @@ function updateUpvotes(commentId, userId) {
             upvotes++;
         }
         else {
-            throw new Error("This user has already upvoted");
+            throw new MyError(400, "This user has already upvoted");
         }
         index = comment.downvotes.indexOf(userObjId);
         if (index != -1) {
@@ -112,11 +124,14 @@ function updateUpvotes(commentId, userId) {
         return commentFromDB.votes;
     });
 }
-exports.updateUpvotes = updateUpvotes;
+exports._upvote = _upvote;
 ;
-function updateDownvotes(commentId, userId) {
+function _downvote(commentId, userId) {
     return __awaiter(this, void 0, void 0, function* () {
         const comment = yield commentModel.findById(commentId);
+        if (!comment) {
+            throw new MyError(404, `Comment with ID ${commentId} is not found`);
+        }
         const userObjId = new mongoose_1.default.Types.ObjectId(userId);
         let downvotes = 0;
         let index = comment.downvotes.indexOf(userObjId);
@@ -125,8 +140,7 @@ function updateDownvotes(commentId, userId) {
             downvotes++;
         }
         else {
-            // User has already downvoted
-            throw new Error("This user has already downvoted");
+            throw new MyError(400, "This user has already downvoted");
         }
         index = comment.upvotes.indexOf(userObjId);
         if (index != -1) {
@@ -139,5 +153,5 @@ function updateDownvotes(commentId, userId) {
         return commentFromDB.votes;
     });
 }
-exports.updateDownvotes = updateDownvotes;
+exports._downvote = _downvote;
 ;

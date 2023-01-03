@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.downvote = exports.upvote = exports.removeComment = exports.removeAllComments = exports.editComment = exports.createComment = exports.getComments = void 0;
+exports.downvote = exports.upvote = exports.deleteComment = exports.deleteComments = exports.updateComment = exports.createComment = exports.getComments = void 0;
 const comments_1 = require("../models/comments");
 const mongoose_1 = require("mongoose");
 function getComments(req, res) {
@@ -19,83 +19,122 @@ function getComments(req, res) {
             if (!(0, mongoose_1.isValidObjectId)(questionId)) {
                 return res.status(400).json({ message: "Invalid questionId" });
             }
-            const comments = yield (0, comments_1.loadComments)(questionId);
+            const comments = yield (0, comments_1._getComments)(questionId);
+            if (comments.length == 0) {
+                return res.status(404).json({ message: "Question with given ID not found, or it has no comments" });
+            }
             res.status(200).json(comments);
         }
         catch (error) {
             console.error(error);
-            res.sendStatus(500);
+            res.status(500).json({ message: "Internal comment-service error" });
         }
     });
 }
 exports.getComments = getComments;
 function createComment(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        if (!req.body.authorId || !req.body.content) {
-            res.status(400).json({
-                message: "All fields required"
-            });
-            return;
-        }
-        const questionId = req.params.questionId;
-        const authorId = req.body.authorId;
-        const content = req.body.content;
-        const comment = yield (0, comments_1.saveComment)(questionId, authorId, content);
-        res.status(200).json(comment);
-    });
-}
-exports.createComment = createComment;
-function editComment(req, res) {
-    return __awaiter(this, void 0, void 0, function* () {
-        if (!req.body.authorId || !req.body.content) {
-            return res.status(400).json({
-                "message": "All fields required"
-            });
-        }
-        const commentId = req.params.commentId;
-        const authorId = req.body.authorId;
-        const content = req.body.content;
-        const comment = yield (0, comments_1.updateComment)(commentId, authorId, content);
-        res.status(200).json(comment);
-    });
-}
-exports.editComment = editComment;
-function removeAllComments(req, res) {
-    return __awaiter(this, void 0, void 0, function* () {
         try {
-            yield (0, comments_1.deleteAllComments)(req.params.questionId);
-            res.sendStatus(204);
+            if (!req.body.authorId || !req.body.content) {
+                return res.status(400).json({ message: "Author ID and comment content are required in request body" });
+            }
+            const questionId = req.params.questionId;
+            const authorId = req.body.authorId;
+            if (!(0, mongoose_1.isValidObjectId)(questionId)) {
+                return res.status(400).json({ message: "Invalid question ID" });
+            }
+            if (!(0, mongoose_1.isValidObjectId)(authorId)) {
+                return res.status(400).json({ message: "Invalid author ID" });
+            }
+            const content = req.body.content;
+            if (content.trim() == "") {
+                return res.status(400).json({ message: "Comment content can not be empty" });
+            }
+            const comment = yield (0, comments_1._createComment)(questionId, authorId, content);
+            res.status(200).json(comment);
         }
         catch (error) {
             console.error(error);
-            res.sendStatus(500);
+            res.status(500).json({ message: "Internal comment-service error" });
         }
     });
 }
-exports.removeAllComments = removeAllComments;
-function removeComment(req, res) {
+exports.createComment = createComment;
+function updateComment(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const deletedComment = yield (0, comments_1.deleteComment)(req.params.commentId);
+            if (!req.body.authorId || !req.body.content) {
+                return res.status(400).json({ message: "Author ID and comment content are required in request body" });
+            }
+            const commentId = req.params.commentId;
+            const authorId = req.body.authorId;
+            const content = req.body.content;
+            if (!(0, mongoose_1.isValidObjectId)(commentId)) {
+                return res.status(400).json({ message: "Invalid comment ID" });
+            }
+            if (!(0, mongoose_1.isValidObjectId)(authorId)) {
+                return res.status(400).json({ message: "Invalid author ID" });
+            }
+            if (content.trim() == "") {
+                return res.status(400).json({ message: "Comment content can not be empty" });
+            }
+            try {
+                const comment = yield (0, comments_1._updateComment)(commentId, authorId, content);
+                res.status(200).json(comment);
+            }
+            catch (error) {
+                res.status(error.statusCode).json({ message: error.message });
+            }
+        }
+        catch (error) {
+            console.error(error);
+            res.status(500).json({ message: "Internal comment-service error" });
+        }
+    });
+}
+exports.updateComment = updateComment;
+function deleteComments(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const questionId = req.params.questionId;
+            if (!(0, mongoose_1.isValidObjectId)(questionId)) {
+                return res.status(400).json({ message: "Invalid comment ID" });
+            }
+            const result = yield (0, comments_1._deleteComments)(questionId);
+            res.status(200).json({ "message": `${result.deletedCount} comment(s) successfully deleted` });
+        }
+        catch (error) {
+            console.error(error);
+            res.status(500).json({ message: "Internal comment-service error" });
+        }
+    });
+}
+exports.deleteComments = deleteComments;
+function deleteComment(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const commentId = req.params.commentId;
+            const deletedComment = yield (0, comments_1._deleteComment)(commentId);
+            if (!(0, mongoose_1.isValidObjectId)(commentId)) {
+                return res.status(400).json({ message: "Invalid comment ID" });
+            }
             if (!deletedComment) {
-                return res.sendStatus(404);
+                return res.status(404).json({ message: "Comment with this ID is not found" });
             }
             res.sendStatus(204);
         }
         catch (error) {
             console.error(error);
-            res.sendStatus(500);
+            res.status(500).json({ message: "Internal comment-service error" });
         }
     });
 }
-exports.removeComment = removeComment;
+exports.deleteComment = deleteComment;
 function upvote(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             if (!req.body.userId) {
-                return res.status(400).json({
-                    message: "All fields required"
-                });
+                return res.status(400).json({ message: "User ID is required in request body" });
             }
             const commentId = req.params.commentId;
             const userId = req.body.userId;
@@ -106,16 +145,16 @@ function upvote(req, res) {
                 return res.status(400).json({ message: "Invalid user ID" });
             }
             try {
-                const currentVoteCount = yield (0, comments_1.updateUpvotes)(commentId, userId);
+                const currentVoteCount = yield (0, comments_1._upvote)(commentId, userId);
                 res.status(200).json({ currentVoteCount: currentVoteCount });
             }
             catch (error) {
-                res.status(400).json({ message: error.message });
+                res.status(error.statusCode).json({ message: error.message });
             }
         }
         catch (error) {
             console.error(error);
-            res.sendStatus(500);
+            res.status(500).json({ message: "Internal comment-service error" });
         }
     });
 }
@@ -124,7 +163,7 @@ function downvote(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             if (!req.body.userId) {
-                return res.status(400).json({ message: "User ID not found in request body" });
+                return res.status(400).json({ message: "User ID is required in request body" });
             }
             const commentId = req.params.commentId;
             const userId = req.body.userId;
@@ -135,16 +174,16 @@ function downvote(req, res) {
                 return res.status(400).json({ message: "Invalid user ID" });
             }
             try {
-                const currentVoteCount = yield (0, comments_1.updateDownvotes)(commentId, userId);
+                const currentVoteCount = yield (0, comments_1._downvote)(commentId, userId);
                 res.status(200).json({ currentVoteCount: currentVoteCount });
             }
             catch (error) {
-                res.status(400).json({ message: error.message });
+                res.status(error.statusCode).json({ message: error.message });
             }
         }
         catch (error) {
             console.error(error);
-            res.sendStatus(500);
+            res.status(500).json({ message: "Internal comment-service error" });
         }
     });
 }
