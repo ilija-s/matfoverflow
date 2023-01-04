@@ -3,6 +3,11 @@ const usersContorller = require('../controller/users');
 
 const router = express.Router();
 
+router.get('/', (req, res) => 
+{
+    res.send("cao").status(200);
+})
+
 router.get('/:username', usersContorller.getUserByUsername);
 
 router.post('/', usersContorller.addNewUser);

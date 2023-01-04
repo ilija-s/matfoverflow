@@ -14,7 +14,7 @@ const getAllUsers = async (req, res, next) => {
   }
 };
 
-getAllUsers();
+// getAllUsers();
 
 const getUserByUsername = async (req, res, next) => {
   const _username = req.bodyParser;    
