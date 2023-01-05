@@ -10,9 +10,6 @@ export async function getComments(req, res) {
         }
 
         const comments : Object[] = await _getComments(questionId);
-        // if (comments.length == 0){
-        //     return res.status(404).json({message: "Question with given ID not found, or it has no comments"});
-        // }
         res.status(200).json(comments);
     } catch (error) {
         console.error(error);
