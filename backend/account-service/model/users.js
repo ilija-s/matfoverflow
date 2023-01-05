@@ -15,19 +15,24 @@ const userSchema = new mongoose.Schema({
         required : true
     },
     name : {
-        type : mongoose.Schema.Types.String
+        type : mongoose.Schema.Types.String,
+        default : "/"
     },
     surname : {
-        type : mongoose.Schema.Types.String
+        type : mongoose.Schema.Types.String,
+        default : "/"
     },
     picturePath : {
-        type : mongoose.Schema.Types.String
+        type : mongoose.Schema.Types.String,
+        default : "/"
     },
     year : {
-        type : mongoose.Schema.Types.String
+        type : mongoose.Schema.Types.String,
+        default : "/"
     },
     course : {
-        type : mongoose.Schema.Types.String
+        type : mongoose.Schema.Types.String,
+        default : "/"
     }
 })
 
@@ -41,9 +46,17 @@ module.exports.getAllUsers = async () => {
 }
 
 module.exports.findStudent = async function(username) {
-
     let student = await User.find({username : username}).exec();
-    if (student.length == 0)
-        return null;
     return student;
+}
+
+module.exports.addNewUser = async function (username, password, email)
+{
+   
+      let newUsers = await User.insertMany({
+        username : username, 
+        email : email,
+        password : password
+      })
+      return newUsers;
 }

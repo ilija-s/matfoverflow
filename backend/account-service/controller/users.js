@@ -1,3 +1,4 @@
+const { size } = require('lodash');
 const mongoose = require('mongoose');
 
 const users = require('../model/users');
@@ -15,17 +16,11 @@ const getAllUsers = async (req, res, next) => {
 
 const getUserByUsername = async (req, res, next) => {
     const _username = req.params.username;
-    if (_username == undefined){
-      res.status(400).json("missing body params");
-      return;
-    }
-    const student = await users.findStudent(_username);
-    if (student == null)
-        res.status(404).json("student does not exist");
+    let student = await users.findStudent(_username);
+    if (size(student) == 0)
+      res.status(400).json("student does not exist");
     else 
-    {
       res.status(200).json(student);
-    }
 
 };
 
@@ -33,23 +28,20 @@ const getUserByUsername = async (req, res, next) => {
 
 const addNewUser = async (req, res, next) => {
   let isAdded = false;
-  const {email, user_id, username, password} = req.bodyParser;
-  const newUser = {
-    username,
-    email,
-    password,
-    user_id
-  };
-
-  
-  const user = getUserByUsername(username);
-  
-  if (user == null) {
-    await users.insertMany(newUser).exec();
-    isAdded = true;
+  const newUser = req.body;
+  // console.log(newUser["username"] + " body");
+  let username = newUser["username"];
+  let password = newUser["password"];
+  let email = newUser["email"];
+  let user = await users.findStudent(username);
+  if (size(user) == 0)
+  {
+    res.json("student will be added").status(200);
+    await users.addNewUser(username, password, email);
   }
-  
-  return isAdded;
+  else {
+    res.json(user).status(400);
+  }
 };
 
 
