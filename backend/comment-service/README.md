@@ -70,7 +70,8 @@
 * Response:
     * `204 No Content`    - If the comments are deleted successfully.
     * `401 Unauthorized`  - If user is not a moderator or if request is not sent by question service.
-    * `404 Not Found`     - If the comment with given id does not exist.
+    * `404 Not Found`     - If the question with given id does not exist.
+    * `500 Internal Server Error` - If internal server error occurs.
 
 ### DELETE /comments/{questionId}/{commentId}
 
@@ -80,6 +81,7 @@
     * `204 No Content`    - If the comment is deleted successfully.
     * `401 Unauthorized`  - If a user that is not the author of the comment nor moderator tries to delete it.
     * `404 Not Found`     - If the comment with given id does not exist.
+    * `500 Internal Server Error` - If internal server error occurs.
 
 ### PUT /comment/{commentId}/upvote
 
