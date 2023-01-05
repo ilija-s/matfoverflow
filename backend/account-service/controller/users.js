@@ -1,12 +1,10 @@
 const mongoose = require('mongoose');
 
 const users = require('../model/users');
-const bodyParser = require('body-parser');
 
 const getAllUsers = async (req, res, next) => {
   try{
-  const allUsers =  await users.find({}).exec();
-  console.log(allUsers);
+  const allUsers =  await users.getAllUsers();
   res.status(200).json(allUsers);
   }
   catch (err){
@@ -14,26 +12,22 @@ const getAllUsers = async (req, res, next) => {
   }
 };
 
-// getAllUsers();
 
 const getUserByUsername = async (req, res, next) => {
-  const _username = req.bodyParser;    
-  console.log(_username);
-    try {
-      if (_username == undefined){
-        res.status(400);
-      }
-      const student = await users.find({username : _username}).exec();
-      console.log(student + "da");
+    const _username = req.params.username;
+    if (_username == undefined){
+      res.status(400).json("missing body params");
+      return;
+    }
+    const student = await users.findStudent(_username);
+    if (student == null)
+        res.status(404).json("student does not exist");
+    else 
+    {
       res.status(200).json(student);
     }
-    catch(err){
-      console.log("ne");
-      next;
-    };
-}
 
-// getUserByUsername("Dusan");
+};
 
 
 

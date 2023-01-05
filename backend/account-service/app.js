@@ -2,7 +2,7 @@ const express = require('express');
 const userRouter = require('./routes/account');
 const mongoose = require('mongoose');
 
-const {urlencoded, json} = require('body-parser');
+const {json, urlencoded} = require('body-parser');
 
 const app = express();
 
@@ -25,7 +25,7 @@ console.log('Greska: ', error);
 app.use(json());
 app.use(urlencoded({ extended: false }));
 
-app.use('/', userRouter);
+app.use('/users', userRouter);
 
 module.exports = app;
 

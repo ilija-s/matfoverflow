@@ -31,6 +31,19 @@ const userSchema = new mongoose.Schema({
     }
 })
 
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model('user', userSchema);
 
 module.exports = User;
+
+module.exports.getAllUsers = async () => {
+    let users = await User.find({}).exec();
+    return users;
+}
+
+module.exports.findStudent = async function(username) {
+
+    let student = await User.find({username : username}).exec();
+    if (student.length == 0)
+        return null;
+    return student;
+}
