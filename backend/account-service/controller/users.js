@@ -40,29 +40,69 @@ const addNewUser = async (req, res, next) => {
     await users.addNewUser(username, password, email);
   }
   else {
-    res.json(user).status(400);
+    res.json(`username ${username} already exists`).status(400);
   }
 };
 
 
-const changeUserPassword = (username, oldPassword, newPassword) => {
-  const foundUser = users.find(user => user.username == username && user.password == oldPassword);
-  if (!foundUser) {
-    return false;
-  }
-
-  foundUser.password = newPassword;
-  return true;
-};
-
-const deleteUser = (username) => {
-  const userIndex = users.findIndex(user => user.username == username);
-  if (userIndex == -1) {
-    return false;
-  }
+const changeUserPassword = async (req, res) => {
   
-  users.splice(userIndex, 1);
-  return true;
+  const username = req.params.username;
+
+  const user = await users.findStudent(username);
+  if (size(user) == 0)
+  {
+    res.status(404).json("user does not exist");
+    return;
+  }
+  else {
+  const oldPassword = req.body.oldPassword;
+  const newPassword = req.body.newPassword;
+  const currentPassword = user[0]["password"];
+    if (oldPassword == currentPassword)
+    {
+      res.status(200).json("password successfully changed");
+      await users.setNewPassword(username, newPassword);
+    }
+    else {
+      res.status(400).json("insert correct password");
+    }
+  }
+};
+
+const deleteUser = async (req, res) => {
+
+  let username = req.params.username;
+
+  let user = await users.findStudent(username);
+
+  if (size(user) == 0)
+  {
+    res.status(404).json("user does not exist");
+    return;
+  }
+  else 
+  {
+    const password = req.body.password;
+    if (password == undefined)
+    {
+      res.status(400).json("input password fist!");
+      return;
+    }
+    if (password == user[0]["password"])
+    {
+      await users.deleteStudent(username);
+      res.status(200).json(`student ${username} deleted!`);
+      return;
+    }
+    else 
+    {
+      res.status(400).json("incorrect password, student can't be deleted");
+      return;
+    }
+  }
+
+
 };
 
 // console.log(getAllUsers());

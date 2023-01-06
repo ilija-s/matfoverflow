@@ -60,3 +60,14 @@ module.exports.addNewUser = async function (username, password, email)
       })
       return newUsers;
 }
+
+module.exports.setNewPassword = async function (username, newPassword)
+{
+    let student = await User.updateOne({username : username}, {password : newPassword})
+    .exec();
+}
+
+module.exports.deleteStudent = async function (username)
+{
+    await User.deleteOne({username : username}).exec();
+}

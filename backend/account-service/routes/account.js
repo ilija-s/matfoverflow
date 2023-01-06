@@ -9,7 +9,7 @@ router.get('/:username', usersContorller.getUserByUsername);
 
 router.post('/', usersContorller.addNewUser);
 
-router.put('/', usersContorller.changeUserPassword);
+router.put('/:username', usersContorller.changeUserPassword);
 
 router.delete('/:username', usersContorller.deleteUser);
 
