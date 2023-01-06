@@ -33,7 +33,20 @@ const userSchema = new mongoose.Schema({
     course : {
         type : mongoose.Schema.Types.String,
         default : "/"
-    }
+    },
+    score : {
+        type : mongoose.Schema.Types.Number,
+        default : 0
+    },
+    upvotes : {
+        type : mongoose.Schema.Types.Number,
+        default : 0
+    },
+    downvotes : {
+        type : mongoose.Schema.Types.Number,
+        default : 0
+    },
+    
 })
 
 const User = mongoose.model('user', userSchema);
@@ -50,13 +63,25 @@ module.exports.findStudent = async function(username) {
     return student;
 }
 
-module.exports.addNewUser = async function (username, password, email)
-{
+module.exports.addNewUser = async function (username, password, email, name, surname, 
+    picturePath, year, course, score, upvotes, downvotes) {
+    if (email == undefined || username == undefined || password == undefined)
+    {
+        return null;
+    }
    
       let newUsers = await User.insertMany({
         username : username, 
         email : email,
-        password : password
+        password : password, 
+        name : name,
+        surname : surname,
+        picturePath : picturePath,
+        year : year,
+        course : course,
+        score : score,
+        upvotes : upvotes, 
+        downvotes: downvotes
       })
       return newUsers;
 }

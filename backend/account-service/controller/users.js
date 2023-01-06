@@ -36,8 +36,16 @@ const addNewUser = async (req, res, next) => {
   let user = await users.findStudent(username);
   if (size(user) == 0)
   {
-    res.json("student will be added").status(200);
-    await users.addNewUser(username, password, email);
+    let newUser = await users.addNewUser(username, password, email);
+    if (newUser == null)
+    {
+      res.json("input email, password and username!").status(400);
+      return;
+    }
+    else 
+    {
+      res.json(newUser).status(200);
+    }
   }
   else {
     res.json(`username ${username} already exists`).status(400);
