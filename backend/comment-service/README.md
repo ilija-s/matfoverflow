@@ -4,13 +4,13 @@
 
 | Name | Type |
 |------|------|
-| comment_id | uuid |
-| question_id | uuid |
-| author_id | uuid |
+| comment_id | ObjectId |
+| question_id | ObjectId |
+| author_id | ObjectId |
 | content | string |
 | votes | int |
-| upvotes | [uuid] |
-| downvotes | [uuid] |
+| upvotes | [ObjectId] |
+| downvotes | [ObjectId] |
 | creationDate | timestamp |
 | modifiedDate | timestamp |
 
@@ -24,7 +24,8 @@
 
 * Response:
 	* `200 OK`, `[Comment]` - Returns the list of comments.
-    * `404 Not Found`       - If the question with give id does not exist.
+    * `400 Bad Requset`       - If the question ID is invalid.
+    * `500 Internal Server Error`
 
 ### POST /comments/{questionId}
 
@@ -35,7 +36,7 @@
 ```json
 {
     "content": string,  
-    "userId": uuid
+    "userId": ObjectId
 }
 ```
 
@@ -43,6 +44,7 @@
 	* `200 OK`, `Comment`  - Returns the comment that was created.
 	* `400 Bad Request`    - Returns error message with information on what field is missing or what value has wrong type.
 	* `404 Not Found`      - If the question with given id does not exist.
+    * `500 Internal Server Error`
 
 ### PUT /comments/{commentId}
 
@@ -53,7 +55,7 @@
 ```json
 {
     "content": string,
-    "userId": uuid
+    "userId": ObjectId
 }
 ```
 
@@ -62,6 +64,7 @@
 	* `400 Bad Request`   - Returns error message with information on what field is missing or what value has wrong type.
     * `401 Unauthorized`  - If a user that is not an author of a comment tries to modify it.
     * `404 Not Found`     - If the comment with given id does not exists.
+    * `500 Internal Server Error`
 
 ### DELETE /comments/{questionId}
 
@@ -69,8 +72,8 @@
 
 * Response:
     * `204 No Content`    - If the comments are deleted successfully.
+    * `400 Bad Request`   - If question ID is invalid.
     * `401 Unauthorized`  - If user is not a moderator or if request is not sent by question service.
-    * `404 Not Found`     - If the question with given id does not exist.
     * `500 Internal Server Error` - If internal server error occurs.
 
 ### DELETE /comments/{questionId}/{commentId}
@@ -91,7 +94,7 @@
 
 ```json
 {
-    "userId": uuid
+    "userId": ObjectId
 }
 ```
 
@@ -109,7 +112,7 @@
 
 ```json
 {
-    "userId": uuid
+    "userId": ObjectId
 }
 ```
 

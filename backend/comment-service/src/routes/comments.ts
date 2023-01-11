@@ -1,14 +1,14 @@
 import express from "express";
-import { getComments, createComment, updateComment, deleteComments, deleteComment, upvote, downvote} from "../controllers/comments";
+import commentController from "../controllers/comments";
 
 const router : express.Router = express.Router();
 
-router.get('/:questionId', getComments);
-router.post('/:questionId', createComment);
-router.put('/:commentId', updateComment);
-router.delete('/:questionId', deleteComments);
-router.delete('/:questionId/:commentId', deleteComment);
-router.put('/:commentId/upvote', upvote);
-router.put('/:commentId/downvote', downvote);
+router.get('/:questionId', commentController.getComments);
+router.post('/:questionId', commentController.createComment);
+router.put('/:commentId', commentController.updateComment);
+router.delete('/:questionId', commentController.deleteComments);
+router.delete('/:questionId/:commentId', commentController.deleteComment);
+router.put('/:commentId/upvote', commentController.upvote);
+router.put('/:commentId/downvote', commentController.downvote);
 
 export = router;

@@ -1,7 +1,9 @@
-import {_getComments, _createComment, _updateComment, _deleteComments, _deleteComment, _upvote, _downvote} from "../models/comments";
+import commentModel from "../models/comments";
 import { isValidObjectId } from "mongoose";
 
-export async function getComments(req, res) {
+const controller : any = {};
+
+controller.getComments = async function (req, res) {
     try {
         const questionId = req.params.questionId;
 
@@ -9,7 +11,7 @@ export async function getComments(req, res) {
             return res.status(400).json({message: "Invalid questionId"});
         }
 
-        const comments : Object[] = await _getComments(questionId);
+        const comments : Object[] = await commentModel._getComments(questionId);
         res.status(200).json(comments);
     } catch (error) {
         console.error(error);
@@ -17,7 +19,7 @@ export async function getComments(req, res) {
     }
 }
 
-export async function createComment(req, res) {
+controller.createComment = async function (req, res) {
 
     try {
         if(!req.body.authorId || !req.body.content) {
@@ -40,7 +42,7 @@ export async function createComment(req, res) {
             return res.status(400).json({message: "Comment content can not be empty"});
         }
 
-        const comment = await _createComment(questionId, authorId, content)
+        const comment = await commentModel._createComment(questionId, authorId, content)
         res.status(200).json(comment);
     } catch (error) {
         console.error(error);
@@ -48,7 +50,7 @@ export async function createComment(req, res) {
     }
 }
 
-export async function updateComment (req, res) {
+controller.updateComment = async function (req, res) {
     try {
         if(!req.body.authorId || !req.body.content) {
             return res.status(400).json({message : "Author ID and comment content are required in request body"});
@@ -71,7 +73,7 @@ export async function updateComment (req, res) {
         }
     
         try {
-            const comment = await _updateComment(commentId, authorId, content);
+            const comment = await commentModel._updateComment(commentId, authorId, content);
             res.status(200).json(comment);
         } catch (error) {
             res.status(error.statusCode).json({message: error.message});
@@ -82,7 +84,7 @@ export async function updateComment (req, res) {
     }
 }
 
-export async function deleteComments(req, res) {
+controller.deleteComments = async function (req, res) {
     try {
 
         const questionId : string = req.params.questionId;
@@ -90,7 +92,7 @@ export async function deleteComments(req, res) {
             return res.status(400).json({message: "Invalid comment ID"});
         }
 
-        const result = await _deleteComments(questionId);
+        const result = await commentModel._deleteComments(questionId);
         res.status(200).json({"message": `${result.deletedCount} comment(s) successfully deleted`});
     } catch (error) {
         console.error(error);
@@ -98,10 +100,10 @@ export async function deleteComments(req, res) {
     }
 }
 
-export async function deleteComment(req, res) {
+controller.deleteComment = async function (req, res) {
     try {
         const commentId : string = req.params.commentId;
-        const deletedComment = await _deleteComment(commentId);
+        const deletedComment = await commentModel._deleteComment(commentId);
 
         if (!isValidObjectId(commentId)){
             return res.status(400).json({message: "Invalid comment ID"});
@@ -118,7 +120,7 @@ export async function deleteComment(req, res) {
     }
 }
 
-export async function upvote(req, res) {
+controller.upvote = async function (req, res) {
     try {
         if(!req.body.userId) {
             return res.status(400).json({message: "User ID is required in request body"});
@@ -136,7 +138,7 @@ export async function upvote(req, res) {
         }
 
         try {
-            const currentVoteCount : number = await _upvote(commentId, userId);
+            const currentVoteCount : number = await commentModel._upvote(commentId, userId);
             res.status(200).json({currentVoteCount : currentVoteCount});
         } catch (error) {
             res.status(error.statusCode).json({message: error.message})
@@ -148,7 +150,7 @@ export async function upvote(req, res) {
     }    
 }
 
-export async function downvote(req, res) {
+controller.downvote = async function (req, res) {
     try {
 
         if (!req.body.userId) {
@@ -167,7 +169,7 @@ export async function downvote(req, res) {
         }
 
         try {
-            const currentVoteCount : number = await _downvote(commentId, userId);
+            const currentVoteCount : number = await commentModel._downvote(commentId, userId);
             res.status(200).json({currentVoteCount : currentVoteCount});
         } catch (error) {
             res.status(error.statusCode).json({message: error.message})
@@ -177,3 +179,5 @@ export async function downvote(req, res) {
         res.status(500).json({message: "Internal comment-service error"});
     }
 }
+
+export = controller;

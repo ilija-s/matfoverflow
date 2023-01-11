@@ -11,8 +11,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-exports._downvote = exports._upvote = exports._deleteComment = exports._deleteComments = exports._updateComment = exports._createComment = exports._getComments = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
 const commentSchema = new mongoose_1.default.Schema({
     _id: mongoose_1.default.Schema.Types.ObjectId,
@@ -51,14 +49,14 @@ class MyError extends Error {
         this.statusCode = statusCode;
     }
 }
-function _getComments(questionId) {
+const _model = {};
+_model._getComments = function (questionId) {
     return __awaiter(this, void 0, void 0, function* () {
         let comments = yield commentModel.find({ questionId: questionId });
         return comments;
     });
-}
-exports._getComments = _getComments;
-function _createComment(questionId, authorId, content) {
+};
+_model._createComment = function (questionId, authorId, content) {
     return __awaiter(this, void 0, void 0, function* () {
         const newComment = new commentModel();
         newComment._id = new mongoose_1.default.Types.ObjectId();
@@ -68,10 +66,8 @@ function _createComment(questionId, authorId, content) {
         const commentFromDB = yield newComment.save({ timestamps: true });
         return commentFromDB;
     });
-}
-exports._createComment = _createComment;
-;
-function _updateComment(commentId, authorId, content) {
+};
+_model._updateComment = function (commentId, authorId, content) {
     return __awaiter(this, void 0, void 0, function* () {
         const comment = yield commentModel.findById(commentId);
         if (!comment) {
@@ -81,23 +77,18 @@ function _updateComment(commentId, authorId, content) {
         const commentFromDB = comment.save();
         return commentFromDB;
     });
-}
-exports._updateComment = _updateComment;
-;
-function _deleteComments(questionId) {
+};
+_model._deleteComments = function (questionId) {
     return __awaiter(this, void 0, void 0, function* () {
         return yield commentModel.deleteMany({ questionId: questionId });
     });
-}
-exports._deleteComments = _deleteComments;
-function _deleteComment(commentId) {
+};
+_model._deleteComment = function (commentId) {
     return __awaiter(this, void 0, void 0, function* () {
         return yield commentModel.findByIdAndDelete({ _id: commentId });
     });
-}
-exports._deleteComment = _deleteComment;
-;
-function _upvote(commentId, userId) {
+};
+_model._upvote = function (commentId, userId) {
     return __awaiter(this, void 0, void 0, function* () {
         const comment = yield commentModel.findById(commentId);
         if (!comment) {
@@ -123,10 +114,8 @@ function _upvote(commentId, userId) {
         const commentFromDB = yield comment.save({ timestamps: true });
         return commentFromDB.votes;
     });
-}
-exports._upvote = _upvote;
-;
-function _downvote(commentId, userId) {
+};
+_model._downvote = function (commentId, userId) {
     return __awaiter(this, void 0, void 0, function* () {
         const comment = yield commentModel.findById(commentId);
         if (!comment) {
@@ -152,6 +141,5 @@ function _downvote(commentId, userId) {
         const commentFromDB = yield comment.save({ timestamps: true });
         return commentFromDB.votes;
     });
-}
-exports._downvote = _downvote;
-;
+};
+module.exports = _model;

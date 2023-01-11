@@ -41,12 +41,14 @@ class MyError extends Error {
     }
 }
 
-export async function _getComments(questionId : string){
+const _model : any = {};
+
+_model._getComments = async function (questionId : string){
     let comments = await commentModel.find({questionId : questionId});
     return comments;
 }
 
-export async function _createComment(questionId : string, authorId : string, content : string) {
+_model._createComment = async function (questionId : string, authorId : string, content : string) {
     const newComment = new commentModel();
     newComment._id = new mongoose.Types.ObjectId();
     newComment.questionId = new mongoose.Types.ObjectId(questionId);
@@ -57,7 +59,7 @@ export async function _createComment(questionId : string, authorId : string, con
     return commentFromDB;
 };
 
-export async function _updateComment(commentId : string, authorId : string, content : string) {
+_model._updateComment = async function (commentId : string, authorId : string, content : string) {
     const comment = await commentModel.findById(commentId);
     if (!comment) {
         throw new MyError(404,`Comment with ID ${commentId} is not found`);
@@ -68,15 +70,15 @@ export async function _updateComment(commentId : string, authorId : string, cont
     return commentFromDB;
 };
 
-export async function _deleteComments(questionId : string) {
+_model._deleteComments = async function (questionId : string) {
     return await commentModel.deleteMany({questionId : questionId});
 }
 
-export async function _deleteComment(commentId : string) {
+_model._deleteComment = async function (commentId : string) {
     return await commentModel.findByIdAndDelete({_id : commentId});
 };
 
-export async function _upvote(commentId: string, userId: string) {
+_model._upvote = async function (commentId: string, userId: string) {
 
         const comment = await commentModel.findById(commentId);
         if (!comment) {
@@ -106,8 +108,7 @@ export async function _upvote(commentId: string, userId: string) {
         return commentFromDB.votes;
 };
 
-export async function _downvote(commentId: string, userId: string) {
-
+_model._downvote = async function (commentId: string, userId: string) {
     const comment = await commentModel.findById(commentId);
     if (!comment) {
         throw new MyError(404, `Comment with ID ${commentId} is not found`);
@@ -135,3 +136,5 @@ export async function _downvote(commentId: string, userId: string) {
     const commentFromDB = await comment.save({timestamps : true});
     return commentFromDB.votes;
 };
+
+export = _model;
