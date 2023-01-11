@@ -16,7 +16,7 @@ const getAllUsers = async (req, res, next) => {
 
 const getUserByUsername = async (req, res, next) => {
     const _username = req.params.username;
-    let student = await users.findStudent(_username);
+    let student = await users.findUser(_username);
     if (size(student) == 0)
       res.status(400).json("student does not exist");
     else 
@@ -33,7 +33,7 @@ const addNewUser = async (req, res, next) => {
   let username = newUser["username"];
   let password = newUser["password"];
   let email = newUser["email"];
-  let user = await users.findStudent(username);
+  let user = await users.findUser(username);
   if (size(user) == 0)
   {
     let newUser = await users.addNewUser(username, password, email);
@@ -57,7 +57,7 @@ const changeUserPassword = async (req, res) => {
   
   const username = req.params.username;
 
-  const user = await users.findStudent(username);
+  const user = await users.findUser(username);
   if (size(user) == 0)
   {
     res.status(404).json("user does not exist");
@@ -82,7 +82,7 @@ const deleteUser = async (req, res) => {
 
   let username = req.params.username;
 
-  let user = await users.findStudent(username);
+  let user = await users.findUser(username);
 
   if (size(user) == 0)
   {

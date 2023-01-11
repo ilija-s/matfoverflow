@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema({
         type : mongoose.Schema.Types.String,
         default : "/"
     },
-    picturePath : {
+    imageUrl : {
         type : mongoose.Schema.Types.String,
         default : "/"
     },
@@ -58,7 +58,7 @@ module.exports.getAllUsers = async () => {
     return users;
 }
 
-module.exports.findStudent = async function(username) {
+module.exports.findUser = async function(username) {
     let student = await User.find({username : username}).exec();
     return student;
 }
