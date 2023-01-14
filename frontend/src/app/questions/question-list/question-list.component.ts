@@ -8,7 +8,8 @@ import { Question } from '../models/question.model';
 })
 export class QuestionListComponent implements OnInit{
   
-  @Input() questions : Question[] | undefined;
+  @Input()
+  questions!: Question[];
 
   constructor() { }
   
