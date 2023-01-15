@@ -17,4 +17,11 @@ export class QuestionService {
 
     return obs.pipe();
   }
+
+  public sendVoteForQuestion(questionId: string, user: string, vote: string): void {
+    this.http.put<any>(
+      "http://localhost:4000/questions/" + questionId + "/vote",
+      { user, vote }
+    ).subscribe(msg => console.log(msg));
+  }
 }

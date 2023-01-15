@@ -2,10 +2,10 @@
     <div class="ui two column grid container">
         <div class="two wide column">
             <div class="content">
-                <button class="ui positive basic icon button">
+                <button class="ui positive basic icon button" (click)="onUpvoteButtonPressed(question)">
                     <i class="plus icon"></i>
                 </button>
-                <button class="ui negative basic icon button">
+                <button class="ui negative basic icon button" (click)="onDownvoteButtonPressed(question)">
                     <i class="minus icon"></i>
                 </button>
                 <h3>{{ question.votes }} votes</h3>
