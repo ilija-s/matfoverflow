@@ -9,6 +9,7 @@ import { UserProfileComponent } from './user/user-profile/user-profile.component
 import { QuestionListComponent } from './questions/question-list/question-list.component';
 import { QuestionInfoComponent } from './questions/question-info/question-info.component';
 import { CreateQuestionComponent } from './questions/create-question/create-question.component';
+import { QuestionComponent } from './questions/question/question.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { CreateQuestionComponent } from './questions/create-question/create-ques
     UserProfileComponent,
     QuestionListComponent,
     QuestionInfoComponent,
-    CreateQuestionComponent
+    CreateQuestionComponent,
+    QuestionComponent
   ],
   imports: [
     BrowserModule,
