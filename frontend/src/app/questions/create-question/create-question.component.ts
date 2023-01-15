@@ -1,6 +1,7 @@
 import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Question } from '../models/question.model';
+import { QuestionNameValidator } from '../validators/question-name-validator';
 
 @Component({
   selector: 'app-create-question',
@@ -14,22 +15,36 @@ export class CreateQuestionComponent implements OnInit{
 
   @Output() questionCreated: EventEmitter<Question> = new EventEmitter<Question>();
   
-  createQuestionForm: FormGroup;
+  createQuestionForm!: FormGroup;
 
   constructor(private formBuilder: FormBuilder){
     this.createQuestionForm = this.formBuilder.group({
-      title: ['', Validators.required, Validators.minLength(5)],
-      description: ['', Validators.required, Validators.minLength(30)],
+      title: ['', [Validators.required, Validators.minLength(5), QuestionNameValidator]],
+      description: ['', [Validators.required, Validators.minLength(30)]]
     });
   }
   
   ngOnInit(): void {
-    throw new Error('Method not implemented.');
+    // this.createQuestionForm = new FormGroup({
+    //   title: new FormControl('', [Validators.required, Validators.minLength(5), QuestionNameValidator]),
+    //   description: new FormControl('', [Validators.required, Validators.minLength(30)]),
+    // });
   }
 
   public onCreateQuestionSubmit(): void {
-    
+    console.log(this.createQuestionForm.value);
   }
+
+  //TREBA POPRAVITI
+  public titleHasErrors(): boolean {
+    const errors: ValidationErrors | undefined | null= this.createQuestionForm.get("title")?.errors;
+
+    console.log(errors);
+
+    return errors != null;
+  }
+
+
 
   // public addNewQuestion(): void{
   //   const title: string = (this.inputTitle?.nativeElement as HTMLInputElement).value;
