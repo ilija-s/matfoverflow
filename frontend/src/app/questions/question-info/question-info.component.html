@@ -1,13 +1,30 @@
 <div class="content">
-    <a class="header">{{ question.votes }} votes</a>
-    <br>
-    <br>
-    <a class="header">{{ question.title }}</a>
-    <div class="description">
-        <p>{{ question.description }}</p>
+    <div class="ui two column grid container">
+        <div class="two wide column">
+            <div class="content">
+                <button class="ui positive basic icon button">
+                    <i class="plus icon"></i>
+                </button>
+                <button class="ui negative basic icon button">
+                    <i class="minus icon"></i>
+                </button>
+                <h3>{{ question.votes }} votes</h3>
+                <h3>{{ question.views }} views</h3>
+                <h3>{{ question.answers }} answers</h3>
+            </div>
+        </div>
+        <div class="fourteen wide column">
+            <h3>{{ question.title }}</h3>
+            <div class="description">
+                <p>{{ question.description }}</p>
+            </div>
+            <div class="extra">
+                <p><a>{{ question.author }}</a>'s question</p>
+                Tags: 
+                <div class="ui label" *ngFor="let tag of question.tags">{{ tag }}</div>
+            </div>
+            <br>
+            <button type="button" class="ui basic blue button">View question</button>
+        </div>
     </div>
-    <div class="extra">
-        <p><a>{{ question.author }}</a>'s question</p>
-    </div>
-    <button type="button" class="ui button" style = "background-color: rgb(194, 221, 240); margin: 10px;">View question</button>
 </div>
