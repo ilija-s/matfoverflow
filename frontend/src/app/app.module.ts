@@ -10,6 +10,9 @@ import { QuestionListComponent } from './questions/question-list/question-list.c
 import { QuestionInfoComponent } from './questions/question-info/question-info.component';
 import { CreateQuestionComponent } from './questions/create-question/create-question.component';
 import { QuestionComponent } from './questions/question/question.component';
+import { LoginFormComponent } from './user/login-form/login-form.component';
+import { RegisterFormComponent } from './user/register-form/register-form.component';
+import { UserInfoComponent } from './user/user-info/user-info.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +21,10 @@ import { QuestionComponent } from './questions/question/question.component';
     QuestionListComponent,
     QuestionInfoComponent,
     CreateQuestionComponent,
-    QuestionComponent
+    QuestionComponent,
+    LoginFormComponent,
+    RegisterFormComponent,
+    UserInfoComponent
   ],
   imports: [
     BrowserModule,
