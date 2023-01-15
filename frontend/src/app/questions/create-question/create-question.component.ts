@@ -1,6 +1,7 @@
 import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Question } from '../models/question.model';
+import { QuestionService } from '../services/question.service';
 import { QuestionNameValidator } from '../validators/question-name-validator';
 
 @Component({
@@ -17,27 +18,31 @@ export class CreateQuestionComponent implements OnInit{
   
   createQuestionForm!: FormGroup;
 
-  constructor(private formBuilder: FormBuilder){
+  constructor(private formBuilder: FormBuilder, private questionService: QuestionService){
     this.createQuestionForm = this.formBuilder.group({
       title: ['', [Validators.required, Validators.minLength(5), QuestionNameValidator]],
-      description: ['', [Validators.required, Validators.minLength(30)]]
+      description: ['', [Validators.required, Validators.minLength(30)]],
+      user: 'HARDCODED USER',
+      tags: [""]
     });
   }
   
   ngOnInit(): void {
-    // this.createQuestionForm = new FormGroup({
-    //   title: new FormControl('', [Validators.required, Validators.minLength(5), QuestionNameValidator]),
-    //   description: new FormControl('', [Validators.required, Validators.minLength(30)]),
-    // });
   }
 
   public onCreateQuestionSubmit(): void {
     console.log(this.createQuestionForm.value);
+    const title: string = this.createQuestionForm.value['title'];
+    const description: string = this.createQuestionForm.value['description'];
+    const user: string = this.createQuestionForm.value['user'];
+    const tags: string[] = this.createQuestionForm.value['tags'];
+    const response: any = this.questionService.addNewQuestion(title, description, user, tags);
+    console.log(response);
   }
 
   //TREBA POPRAVITI
   public titleHasErrors(): boolean {
-    const errors: ValidationErrors | undefined | null= this.createQuestionForm.get("title")?.errors;
+    const errors: ValidationErrors | undefined | null = this.createQuestionForm.get("title")?.errors;
 
     console.log(errors);
 
