@@ -12,7 +12,7 @@ export class QuestionService {
 
   public getQuestions(): Observable<Question[]> {
     const obs: Observable<Question[]> = this.http.get<Question[]>(
-      "localhost:4000/questions"
+      "http://localhost:4000/questions"
     );
 
     return obs.pipe();
