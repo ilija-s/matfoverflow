@@ -22,6 +22,7 @@ export class AppComponent implements OnInit{
 
   public loadQuestions() {
     this.questions = this.questionService.getQuestions();
+    this.questionService.setIsSelectedQuestion(false);
   }
 
   public onQuestionCreated(question: Question): void {

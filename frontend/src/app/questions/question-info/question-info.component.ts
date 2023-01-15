@@ -26,7 +26,8 @@ export class QuestionInfoComponent implements OnInit {
   }
 
   public viewQuestion(question: Question): void {
-    this.questionService.openQuestionDetails();
+    this.questionService.setQuestion(question);
+    this.questionService.setIsSelectedQuestion(true);
   }
 
 }

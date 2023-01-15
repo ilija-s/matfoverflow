@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Question } from '../models/question.model';
 
 @Injectable({
@@ -8,8 +8,20 @@ import { Question } from '../models/question.model';
 })
 export class QuestionService {
   private readonly url = "http://localhost:4000/questions";
+  private question$ = new BehaviorSubject<any>({});
+  selectedQuestion$ = this.question$.asObservable();
+  private isSelectedQuestion$ = new BehaviorSubject<any>({});
+  isSelectedQuestionObs$ = this.isSelectedQuestion$.asObservable();
 
   constructor(private http: HttpClient) { }
+
+  setQuestion(question: any) {
+    this.question$.next(question);
+  }
+
+  setIsSelectedQuestion(value: any) {
+    this.isSelectedQuestion$.next(value);
+  }
 
   public getQuestions(): Observable<Question[]> {
     const obs: Observable<Question[]> = this.http.get<Question[]>(this.url);
