@@ -1,5 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const cors = require('cors');
 const mongoose = require("mongoose");
 
 const questionRouter = require("./routes/question");
@@ -13,6 +14,7 @@ mongoose.connect("mongodb://localhost:27017/QuestionsDB", {
 });
 
 const app = express();
+app.use(cors());
 app.use(express.static("client"));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json({}));

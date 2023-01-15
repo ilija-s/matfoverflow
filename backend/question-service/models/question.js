@@ -47,6 +47,11 @@ module.exports.model = QuestionModel
 
 module.exports.getQuestionById = async function (questionId) {
     let question = await QuestionModel.findById(questionId).exec();
+
+    await QuestionModel.updateOne(
+        { _id: questionId }, 
+        { $inc: { views: 1} }).exec();
+
     return question;
 };
 

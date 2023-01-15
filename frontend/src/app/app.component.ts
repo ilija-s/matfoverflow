@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import { Question } from './questions/models/question.model';
+import { QuestionService } from './questions/services/question.service';
 declare const $: any
 
 @Component({
@@ -8,39 +10,21 @@ declare const $: any
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit{
-  //creating a list of questions for testing
-  questions: Question[] = [
-    new Question(
-      "Question x",
-      "This is a description for question x",
-      "autor1"
-    ),
-    new Question(
-      "Question y",
-      "This is a description for question y",
-      "autor2"
-    ),
-    new Question(
-      "Question z",
-      "This is a description for question z",
-      "autor3"
-    ),
-    new Question(
-      "Question m",
-      "This is a description for question m",
-      "autor4"
-    ),
-  ];
+  questions: Observable<Question[]>;
 
-  constructor() {
-
+  constructor(private questionService: QuestionService) {
+    this.questions = this.questionService.getQuestions();
   }
 
   ngOnInit(): void {
     $('.menu .item').tab();
   }
 
+  public loadQuestions() {
+    this.questions = this.questionService.getQuestions();
+  }
+
   public onQuestionCreated(question: Question): void {
-    this.questions.push(question);
+    // this.questions.push(question);
   }
 }

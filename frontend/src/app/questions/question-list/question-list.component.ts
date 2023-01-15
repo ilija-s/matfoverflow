@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import { Question } from '../models/question.model';
 
 @Component({
@@ -9,12 +10,11 @@ import { Question } from '../models/question.model';
 export class QuestionListComponent implements OnInit{
   
   @Input()
-  questions!: Question[];
+  questions!: Observable<Question[]>;
 
   constructor() { }
   
   ngOnInit(): void {
-    throw new Error('Method not implemented.');
   }
 
 }
