@@ -31,7 +31,7 @@ questionsRoute.get("/tags/:tag", async (req, res) => {
 questionsRoute.post("/", async (req, res) => {
     const { title, description, user, tags } = req.body;
     if (!title || !description || !user) {
-        res.status(400).json("Information provided is not valid!");
+        res.status(400).json({ error: "Information provided is not valid!" });
         return;
     }
     // HACK
