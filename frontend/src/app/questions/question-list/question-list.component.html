@@ -1,3 +1,6 @@
 <div class="ui divided items">
-    <app-question-info class="ui item" *ngFor="let questionInfo of questions | async" [question]="questionInfo"></app-question-info>
+    <div *ngIf="!isSelectedQuestion">
+        <app-question-info class="ui item" *ngFor="let questionInfo of questions | async" [question]="questionInfo"></app-question-info>
+    </div>
+    <app-question class="ui item" *ngIf="isSelectedQuestion"></app-question>
 </div>
