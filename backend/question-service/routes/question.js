@@ -29,11 +29,13 @@ questionsRoute.get("/tags/:tag", async (req, res) => {
 })
 
 questionsRoute.post("/", async (req, res) => {
-    const { title, description, author, tags } = req.body;
-    if (!title || !description || !author || !tags) {
-        res.status(400).json("Information provided is not valid!");
+    const { title, description, user, tags } = req.body;
+    if (!title || !description || !user) {
+        res.status(400).json({ error: "Information provided is not valid!" });
         return;
     }
+    // HACK
+    const author = user;
 
     const createdQuestion = await QuestionModel.addNewQuestion({ title, description, author, tags });
 

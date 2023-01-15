@@ -1,10 +1,12 @@
 <h3>Ask a public question</h3>
 
-<form class="ui form" [formGroup]="createQuestionForm" (ngSubmit)="onCreateQuestionSubmit">
-    <div class="required fluid field">
+<form class="ui form" [formGroup]="createQuestionForm" (ngSubmit)="onCreateQuestionSubmit()">
+    <!-- [ngClass]="{ error: titleHasErrors() }" TREBA OVO DODATI DOLE I U .ts OBRADITI F-ju -->
+    <!-- NE RADI KADA SE KLIKNE SUBMIT VALJDA JE GRESKA U CONSTRUCTORU I FORMBUILDERU PA ZATO NE MOZE OVO IZNAD DA SE DODA -->
+    <div class="required fluid field" [ngClass]="{ error: titleHasErrors() }">
         <label>Title</label>
         <p>Be specific and imagine you're asking a question to another person.</p>
-        <input type="text" formControlName="name">
+        <input type="text" formControlName="title">
     </div>
 
     <div class="required fluid field">
