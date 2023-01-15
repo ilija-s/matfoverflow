@@ -10,7 +10,6 @@ declare const $: any
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit{
-  //creating a list of questions for testing
   questions: Observable<Question[]>;
 
   constructor(private questionService: QuestionService) {
@@ -19,6 +18,10 @@ export class AppComponent implements OnInit{
 
   ngOnInit(): void {
     $('.menu .item').tab();
+  }
+
+  public loadQuestions() {
+    this.questions = this.questionService.getQuestions();
   }
 
   public onQuestionCreated(question: Question): void {

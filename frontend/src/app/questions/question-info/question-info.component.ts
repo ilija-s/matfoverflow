@@ -25,4 +25,8 @@ export class QuestionInfoComponent implements OnInit {
     this.questionService.sendVoteForQuestion(question._id, "HARDCODED USER", "downvote");
   }
 
+  public viewQuestion(question: Question): void {
+    this.questionService.openQuestionDetails();
+  }
+
 }

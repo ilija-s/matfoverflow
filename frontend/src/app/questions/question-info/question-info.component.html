@@ -24,7 +24,7 @@
                 <div class="ui label" *ngFor="let tag of question.tags">{{ tag }}</div>
             </div>
             <br>
-            <button type="button" class="ui basic blue button">View question</button>
+            <button type="button" class="ui basic blue button" (click)="viewQuestion(question)">View question</button>
         </div>
     </div>
 </div>
