@@ -29,6 +29,10 @@ export class QuestionService {
     return obs.pipe();
   }
 
+  public getQuestion(questionId: string): void {
+    this.http.get<Question>(this.url + "/" + questionId).subscribe(_ => {});
+  }
+
   public addNewQuestion(title: string, description: string, user: string, tags: string[]): any {
     const body = {
       title,
