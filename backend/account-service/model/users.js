@@ -1,3 +1,4 @@
+const { unset } = require('lodash');
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
@@ -61,6 +62,12 @@ module.exports.getAllUsers = async () => {
 module.exports.findUser = async function(username) {
     let student = await User.find({username : username}).exec();
     return student;
+}
+
+module.exports.loginUser = async function(username, password)
+{
+    let user = await User.find({username : username, password : password}).exec();
+    return user;
 }
 
 module.exports.addNewUser = async function (username, password, email, name, surname, 

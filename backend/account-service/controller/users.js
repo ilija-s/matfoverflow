@@ -3,26 +3,52 @@ const mongoose = require('mongoose');
 
 const users = require('../model/users');
 
-const getAllUsers = async (req, res, next) => {
-  try{
-  const allUsers =  await users.getAllUsers();
-  res.status(200).json(allUsers);
-  }
-  catch (err){
-    next;
-  }
-};
+// const getAllUsers = async (req, res, next) => {
+//   try{
+//   const allUsers =  await users.getAllUsers();
+//   res.status(200).json(allUsers);
+//   }
+//   catch (err){
+//     next;
+//   }
+// };
 
 
 const getUserByUsername = async (req, res, next) => {
-    const _username = req.params.username;
+  const _username = req.body.username;
+  console.log(_username);
     let student = await users.findUser(_username);
     if (size(student) == 0)
-      res.status(400).json("student does not exist");
+      res.status(400).json({message : "student does not exist"});
     else 
       res.status(200).json(student);
 
 };
+
+const login = async(req, res) => 
+{
+  const username = req.body.username;
+  const password = req.body.password;
+  console.log(username + " asd" + password);
+  let studentWithPassword = await users.loginUser(username, password);
+
+  let student = await users.findUser(username);
+    if (size(student) == 0)
+      res.status(400).json({message : "student does not exist"});
+    else 
+      {
+        if (size(studentWithPassword) == 0)
+        {
+          res.status(404).json({message : "insert correct passsword"});
+        }
+        else
+        {
+          res.status(200).json(studentWithPassword);
+        }
+      }
+
+
+}
 
 
 
@@ -39,7 +65,7 @@ const addNewUser = async (req, res, next) => {
     let newUser = await users.addNewUser(username, password, email);
     if (newUser == null)
     {
-      res.json("input email, password and username!").status(400);
+      res.json({message : "input email, password and username!"}).status(400);
       return;
     }
     else 
@@ -48,7 +74,7 @@ const addNewUser = async (req, res, next) => {
     }
   }
   else {
-    res.json(`username ${username} already exists`).status(400);
+    res.json({message : `username ${username} already exists`}).status(400);
   }
 };
 
@@ -60,7 +86,7 @@ const changeUserPassword = async (req, res) => {
   const user = await users.findUser(username);
   if (size(user) == 0)
   {
-    res.status(404).json("user does not exist");
+    res.status(404).json({message : "user does not exist"});
     return;
   }
   else {
@@ -69,11 +95,11 @@ const changeUserPassword = async (req, res) => {
   const currentPassword = user[0]["password"];
     if (oldPassword == currentPassword)
     {
-      res.status(200).json("password successfully changed");
+      res.status(200).json({message : "password successfully changed"});
       await users.setNewPassword(username, newPassword);
     }
     else {
-      res.status(400).json("insert correct password");
+      res.status(400).json({message : "insert correct password"});
     }
   }
 };
@@ -86,7 +112,7 @@ const deleteUser = async (req, res) => {
 
   if (size(user) == 0)
   {
-    res.status(404).json("user does not exist");
+    res.status(404).json({message : "user does not exist"});
     return;
   }
   else 
@@ -94,18 +120,18 @@ const deleteUser = async (req, res) => {
     const password = req.body.password;
     if (password == undefined)
     {
-      res.status(400).json("input password fist!");
+      res.status(400).json({message : "input password fist!"});
       return;
     }
     if (password == user[0]["password"])
     {
       await users.deleteStudent(username);
-      res.status(200).json(`student ${username} deleted!`);
+      res.status(200).json({message : `student ${username} deleted!`});
       return;
     }
     else 
     {
-      res.status(400).json("incorrect password, student can't be deleted");
+      res.status(400).json({message : "incorrect password, student can't be deleted"});
       return;
     }
   }
@@ -116,9 +142,10 @@ const deleteUser = async (req, res) => {
 // console.log(getAllUsers());
 
 module.exports = {
-  getAllUsers,
+  // getAllUsers,
   getUserByUsername,
   addNewUser,
   changeUserPassword,
   deleteUser,
+  login
 };

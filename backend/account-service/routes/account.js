@@ -3,9 +3,11 @@ const usersContorller = require('../controller/users');
 
 const router = express.Router();
 
-router.get('/', usersContorller.getAllUsers);
+// router.get('/', usersContorller.getAllUsers);
 
-router.get('/:username', usersContorller.getUserByUsername);
+router.get('/', usersContorller.getUserByUsername);
+
+router.get('/login', usersContorller.login);
 
 router.post('/', usersContorller.addNewUser);
 
