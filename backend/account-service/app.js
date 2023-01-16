@@ -1,10 +1,13 @@
 const express = require('express');
 const userRouter = require('./routes/account');
 const mongoose = require('mongoose');
+const morgan = require('morgan');
 
 const {json, urlencoded} = require('body-parser');
 
 const app = express();
+
+app.use(morgan('dev'));
 
 const databaseString =
   process.env.DB_STING || 'mongodb://localhost:27017/users';

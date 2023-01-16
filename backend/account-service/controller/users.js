@@ -14,10 +14,10 @@ const users = require('../model/users');
 // };
 
 
-const getUserByUsername = async (req, res, next) => {
+const getUserByUsername = async (req, res) => {
   const _username = req.body.username;
   console.log(_username);
-    let student = await users.findUser(_username);
+    let student = await users.getAllUsers();
     if (size(student) == 0)
       res.status(400).json({message : "student does not exist"});
     else 

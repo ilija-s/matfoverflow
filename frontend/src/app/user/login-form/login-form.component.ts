@@ -9,7 +9,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 export class LoginFormComponent implements OnInit{
 
   loginForm: FormGroup;
-
+  username : string = '';
+  password : string = '';
   constructor() {
     this.loginForm = new FormGroup({
       username: new FormControl("", [Validators.required, Validators.pattern(/^[0-9a-zA-z_-]{8,}$/)]),
@@ -17,13 +18,13 @@ export class LoginFormComponent implements OnInit{
     });
    }
 
-
-
   ngOnInit(): void {
   }
 
-  public login(): void {
-    
+  public login(data : any): void {
+    this.username = data.username;
+    this.password = data.password;
+
   }
 
 }

@@ -30,7 +30,6 @@ export class UserProfileComponent implements OnInit {
 
   public onUserFormSubmit(): void {
     const data = this.userForm.value;
-
     if (this.userForm.invalid){
       window.alert('Form is not valid. Please, try again!');
       return;
