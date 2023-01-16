@@ -31,4 +31,8 @@ export class QuestionInfoComponent implements OnInit {
     this.questionService.setIsSelectedQuestion(true);
   }
 
+  public filterQuestionsByTag(tag: string): void {
+    const questions: any = this.questionService.filterQuestionsByTag(tag);
+    this.questionService.setQuestions(questions);
+  }
 }
