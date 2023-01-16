@@ -5,17 +5,20 @@
 			<h4>Asked at {{ question.createdAt }}</h4>
 			<h4>Viewed <a>{{ question.views }}</a> times</h4>
 			<h4 class="ui dividing header"></h4>
+			<br>
 		</div>
 		<p>{{ question.description }}</p>
 		<div class="extra">
-			<div class="ui label" *ngFor="let tag of question.tags">{{ tag }}</div>
+			<div *ngIf="!(question.tags[0].length == 0)">
+				<div class="ui label" *ngFor="let tag of question.tags">{{ tag }}</div>
+			</div>
 			<p><a>{{ question.author }}</a>'s question</p>
 			<h4 class="ui dividing header"></h4>
+			<h2>{{ question.answers }} answers</h2>
+			<h4 class="ui dividing header"></h4>
 		</div>
-		<h2>{{ question.answers }} answers</h2>
-		<h4 class="ui dividing header"></h4>
     </div>
-	<div class="row">
+	<div class="content row">
 		<p>{{ question.description }}</p>
 		<h4 class="ui dividing header"></h4>
 	</div>
