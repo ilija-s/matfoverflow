@@ -2,11 +2,13 @@ const express = require('express');
 const userRouter = require('./routes/account');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
+const cors = require('cors');
 
 const {json, urlencoded} = require('body-parser');
 
 const app = express();
 
+app.use(cors());
 app.use(morgan('dev'));
 
 const databaseString =
