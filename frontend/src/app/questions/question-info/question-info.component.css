@@ -8,3 +8,7 @@ p {
 h2 {
 	cursor: pointer;
 }
+
+#tags {
+	cursor: pointer;
+}

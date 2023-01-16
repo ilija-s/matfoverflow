@@ -20,7 +20,7 @@
             <div class="extra">
                 <div *ngIf="!(question.tags[0].length == 0)">
                     <br>
-                    <div class="ui label" *ngFor="let tag of question.tags">{{ tag }}</div>
+                    <div id="tags" class="ui label" *ngFor="let tag of question.tags" (click)="filterQuestionsByTag(tag)">{{ tag }}</div>
                 </div>
                 <br>
                 <p><a>{{ question.author }}</a>'s question</p>
