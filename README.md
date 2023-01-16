@@ -1,6 +1,6 @@
 # Project MatfOverflow
 
-nan
+All of the documentation about the application, building and running is on our [wiki page](https://gitlab.com/matfpveb/projekti/2022-2023/03-MatfOverflow/-/wikis/home).
 
 ## Developers
 
