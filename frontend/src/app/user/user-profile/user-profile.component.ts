@@ -15,7 +15,7 @@ export class UserProfileComponent implements OnInit {
   userForm!: FormGroup;
 
   constructor() {
-    this.user = new User("peraperic", "pera@gmail.com", "Pera Peric", "../../../assets/download.png");
+    this.user = new User("peraperic", "pera@gmail.com", "Pera Peric", "123", "../../../assets/download.png");
     this.showChangeFields = false;
   }
 

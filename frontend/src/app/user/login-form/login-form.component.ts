@@ -21,10 +21,8 @@ export class LoginFormComponent implements OnInit{
   ngOnInit(): void {
   }
 
-  public login(data : any): void {
-    this.username = data.username;
-    this.password = data.password;
-
+  public login(): void {
+    
   }
 
 }

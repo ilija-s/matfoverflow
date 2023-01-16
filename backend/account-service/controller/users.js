@@ -15,9 +15,9 @@ const users = require('../model/users');
 
 
 const getUserByUsername = async (req, res) => {
-  const _username = req.body.username;
+  const _username = req.params.username;
   console.log(_username);
-    let student = await users.getAllUsers();
+    let student = await users.findUser(_username);
     if (size(student) == 0)
       res.status(400).json({message : "student does not exist"});
     else 
@@ -25,11 +25,10 @@ const getUserByUsername = async (req, res) => {
 
 };
 
-const login = async(req, res) => 
+const checkUsername = async(req, res) => 
 {
-  const username = req.body.username;
+  const username = req.params.username;
   const password = req.body.password;
-  console.log(username + " asd" + password);
   let studentWithPassword = await users.loginUser(username, password);
 
   let student = await users.findUser(username);
@@ -59,10 +58,12 @@ const addNewUser = async (req, res, next) => {
   let username = newUser["username"];
   let password = newUser["password"];
   let email = newUser["email"];
+  let name = newUser["name"];
+  let course = newUser["course"];
   let user = await users.findUser(username);
   if (size(user) == 0)
   {
-    let newUser = await users.addNewUser(username, password, email);
+    let newUser = await users.addNewUser(username, password, email, name, course);
     if (newUser == null)
     {
       res.json({message : "input email, password and username!"}).status(400);
@@ -147,5 +148,5 @@ module.exports = {
   addNewUser,
   changeUserPassword,
   deleteUser,
-  login
+  checkUsername
 };

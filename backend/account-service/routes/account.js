@@ -5,9 +5,9 @@ const router = express.Router();
 
 // router.get('/', usersContorller.getAllUsers);
 
-router.get('/', usersContorller.getUserByUsername);
+router.get('/:username', usersContorller.getUserByUsername);
 
-router.get('/login', usersContorller.login);
+router.get('/check/:username', usersContorller.checkUsername);
 
 router.post('/', usersContorller.addNewUser);
 

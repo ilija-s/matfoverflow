@@ -41,11 +41,20 @@ export class RegisterFormComponent implements OnInit {
   public get email(){
     return this.registerForm.get('email')?.value;
   }
+  public get course(){
+    return this.registerForm.get('course')?.value;
+  }
 
-  public register(data : any): void{
-    this.userService.getUsers().subscribe((users : User[]) => 
-    this.users = users);
-    alert(this.users.length);
+  public register(): void{
+    if (!this.registerForm.valid)
+      alert("unesi ispravna polja");
+    else {
+        this.userService.addNewUser(this.registerForm.value)
+        .subscribe((user : User[]) => {
+          this.users = user;
+          alert(this.users[0]["name"]);
+        });
+    }
   }
 
 }

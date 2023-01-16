@@ -70,8 +70,7 @@ module.exports.loginUser = async function(username, password)
     return user;
 }
 
-module.exports.addNewUser = async function (username, password, email, name, surname, 
-    picturePath, year, course, score, upvotes, downvotes) {
+module.exports.addNewUser = async function (username, password, email, name, course) {
     if (email == undefined || username == undefined || password == undefined)
     {
         return null;
@@ -82,13 +81,7 @@ module.exports.addNewUser = async function (username, password, email, name, sur
         email : email,
         password : password, 
         name : name,
-        surname : surname,
-        picturePath : picturePath,
-        year : year,
         course : course,
-        score : score,
-        upvotes : upvotes, 
-        downvotes: downvotes
       })
       return newUsers;
 }
