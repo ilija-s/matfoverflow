@@ -1,5 +1,8 @@
-import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
+import { AuthService } from 'src/app/services/auth.service';
+import { User } from 'src/app/user/models/user.model';
 import { Question } from '../models/question.model';
 import { QuestionService } from '../services/question.service';
 import { QuestionNameValidator } from '../validators/question-name-validator';
@@ -14,15 +17,25 @@ export class CreateQuestionComponent implements OnInit{
   // @ViewChild('inputTitle', { static: false }) inputTitle: ElementRef | undefined;
   // @ViewChild('inputDescription', { static: false }) inputDescription: ElementRef | undefined;
 
+  public sub: Subscription;
+  user: User | null = null;
   @Output() questionCreated: EventEmitter<Question> = new EventEmitter<Question>();
   
   createQuestionForm!: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private questionService: QuestionService){
+  constructor(private formBuilder: FormBuilder, 
+              private questionService: QuestionService,
+              private authService: AuthService){
+  
+    this.sub = this.authService.user.subscribe((user: User | null) => {
+      this.user = user;
+    });
+  
+    this.authService.sendUserDataIfExists();
+
     this.createQuestionForm = this.formBuilder.group({
       title: ['', [Validators.required, Validators.minLength(5), QuestionNameValidator]],
       description: ['', [Validators.required, Validators.minLength(30)]],
-      user: 'HARDCODED USER',
       tags: [""]
     });
   }
@@ -34,10 +47,13 @@ export class CreateQuestionComponent implements OnInit{
     console.log(this.createQuestionForm.value);
     const title: string = this.createQuestionForm.value['title'];
     const description: string = this.createQuestionForm.value['description'];
-    const user: string = this.createQuestionForm.value['user'];
     const tags: string[] = this.createQuestionForm.value['tags'];
-    const response: any = this.questionService.addNewQuestion(title, description, user, tags);
-    console.log(response);
+    if (this.user !== null) {
+      const response: any = this.questionService.addNewQuestion(title, description, this.user.username, tags);
+      console.log(response);
+    } else {
+      window.alert("You need to be logged in to ask a question.");
+    }
   }
 
   //TREBA POPRAVITI
