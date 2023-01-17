@@ -1,10 +1,11 @@
 <div class="ui comments">
     <app-comment *ngFor="let comment of comments" 
     [comment]="comment" 
+    [userId]="userId"
     (commentDeleted)="onCommentDeleted($event)"
     (commentEditing)="onEditingModeChanged($event)">
     </app-comment>
-    <form class="ui reply form" 
+    <form *ngIf="this.user !== null" class="ui reply form" 
       [formGroup]="commentForm"
       (ngSubmit)="postComment(commentForm.value)">
       <div class="field">

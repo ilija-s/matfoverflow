@@ -41,7 +41,7 @@ export class UserProfileComponent implements OnInit {
 
     this.userService.patchUserData(data.username, data.email, data.name).subscribe((user: User) => {
       if(!this.user) {
-        this.user = new User('','','','');
+        this.user = new User('','','','','');
       }
       
       this.user.username = user.username;
@@ -74,7 +74,7 @@ export class UserProfileComponent implements OnInit {
   onChangeName(ev: Event) {
     const newName : string = (ev.target as HTMLInputElement).value;
     if(!this.user) {
-      this.user = new User('','','','');
+      this.user = new User('','','','','');
     }
     this.user.name = newName;
   }
@@ -82,7 +82,7 @@ export class UserProfileComponent implements OnInit {
   onChangeEmail(ev: Event) {
     const newEmail : string = (ev.target as HTMLInputElement).value;
     if(!this.user) {
-      this.user = new User('','','','');
+      this.user = new User('','','','','');
     }
     this.user.email = newEmail;
   }

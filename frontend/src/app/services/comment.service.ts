@@ -24,14 +24,14 @@ export class CommentService {
 		}).toLowerCase();
 	};
 
-	public upvote(commentId : string) : Observable<{currentVoteCount : number}> {
+	public upvote(commentId : string, _userId: string) : Observable<{currentVoteCount : number}> {
 		const userId : string = this.mongoObjectId();
-		return this.http.put<{currentVoteCount : number}>(this.url + commentId + "/upvote", {userId : userId});
+		return this.http.put<{currentVoteCount : number}>(this.url + commentId + "/upvote", {userId : _userId});
 	}
 
-	public downvote(commentId : string) : Observable<{currentVoteCount : number}> {
+	public downvote(commentId : string, _userId : string) : Observable<{currentVoteCount : number}> {
 		const userId : string = this.mongoObjectId();
-		return this.http.put<{currentVoteCount : number}>(this.url + commentId + "/downvote", {userId : userId});
+		return this.http.put<{currentVoteCount : number}>(this.url + commentId + "/downvote", {userId : _userId});
 	}
 
 	public deleteComment(commentId : string) : Observable<any> {

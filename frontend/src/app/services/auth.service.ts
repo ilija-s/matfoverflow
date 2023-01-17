@@ -23,8 +23,8 @@ export class AuthService {
     if(!payload) {
       return null;
     }
-
-    const newUser: User =  new User(payload.username, payload.email, payload.name, payload.imgUrl);
+    
+    const newUser: User =  new User(payload.id, payload.username, payload.email, payload.name, payload.imgUrl);
     this.userSubject.next(newUser);
     return newUser;
   }

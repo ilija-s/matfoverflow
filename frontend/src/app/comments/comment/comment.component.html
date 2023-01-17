@@ -6,12 +6,14 @@
     <a class="author">{{ comment.authorName }}</a>
     <div class="metadata">
       <span class="date">{{ comment.updatedAt }}</span>
-      <button (click)="deleteComment()"><i class="trash icon"></i></button>
-      <button (click)="toggleEditingMode()"><i class="edit icon"></i></button>
+      <div *ngIf="ownsComment">
+        <button (click)="deleteComment()"><i class="trash icon"></i></button>
+        <button (click)="toggleEditingMode()"><i class="edit icon"></i></button>
+      </div>
     </div>
     <div class="rating">
-      <button (click)="upvote()"><i class="thumbs up outline icon"></i></button>
-      <button (click)="downvote()"><i class="thumbs down outline icon"></i></button>
+      <button class="ui positive basic icon button" *ngIf="!ownsComment" (click)="upvote()"><i class="plus icon"></i></button>
+      <button class="ui negative basic icon button" *ngIf="!ownsComment" (click)="downvote()"><i class="minus icon"></i></button>
       <i class="vote">
         {{ comment.votes }}
       </i>

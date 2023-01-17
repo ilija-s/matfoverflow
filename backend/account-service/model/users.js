@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const jwtUtil = require('../utils/jwt');
 
 const userSchema = new mongoose.Schema({
-    user_id : mongoose.Schema.Types.ObjectId,
+    _id : mongoose.Schema.Types.ObjectId,
     username : {
         type : mongoose.Schema.Types.String,
         required : true
@@ -71,11 +71,11 @@ module.exports.getUserJWTByUsername = async function(username) {
       throw new Error(`User with username ${username} does not exist!`);
     }
     return jwtUtil.generateJWT({
-      id: user.user_id,
+      id: user._id,
       username: user.username,
       email: user.email,
       name: user.name,
-      imgUrl: user.imgUrl,
+      imgUrl: user.imgUrl
     });
   }
 

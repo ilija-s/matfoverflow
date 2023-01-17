@@ -1,8 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-
 import { Comment } from '../models/comment.model';
 import { CommentService } from 'src/app/services/comment.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from 'src/app/services/auth.service';
+import { User } from 'src/app/user/models/user.model';
 
 @Component({
 	selector: 'app-comment-list',
@@ -10,7 +11,12 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 	styleUrls: ['./comment-list.component.css']
 })
 export class CommentListComponent implements OnInit{
+
 	public comments : Comment[] = [];
+	public isEditingModeOn: boolean = false;	
+	public commentForm: FormGroup;
+	public user: User | null;
+	public userId : string = "";
 
 	@Input("questionId")
 	public questionId: string = "";
@@ -18,18 +24,23 @@ export class CommentListComponent implements OnInit{
 	@Output("answerCountUpdate")
 	public emitCommentCount : EventEmitter<number> = new EventEmitter<number>();
 
-	public isEditingModeOn: boolean = false;	
-	public commentForm: FormGroup;
-
-	constructor(private commentService : CommentService, private formBuilder : FormBuilder) {
+	constructor(private commentService : CommentService, 
+				private formBuilder : FormBuilder,
+				private authService: AuthService) {
 		this.commentForm = this.formBuilder.group({
 			content : ["", [Validators.required, Validators.minLength(2)]]
 		});
+
+		this.authService.user.subscribe((user: User | null) => {
+			this.user = user;
+		});
+
+		this.user = this.authService.sendUserDataIfExists();
 	}
 
 	ngOnInit(): void {
 		this.refreshComments();
-
+		this.userId = this.user!.id;
 		setInterval(() => {
 			if (!this.isEditingModeOn) {
 				this.refreshComments();
@@ -60,13 +71,19 @@ export class CommentListComponent implements OnInit{
 	}
 
 	public postComment(form : {content : string}) : void {
+		
+		if (this.user === null) {
+			window.alert("You need to be logged in to post answers.");
+			return;
+		} 
+
 		form.content = form.content.trim();
 		if (form.content.length == 0){
-			alert("Comment content can non be empty!");
+			window.alert("Comment content can non be empty!");
 			return;
 		}
 
-		this.commentService.postComment(this.questionId, "1148a2d211a47ca32ee1f42f", "gojko33", form.content)
+		this.commentService.postComment(this.questionId, this.user?.id, this.user?.username, form.content)
 			.subscribe((comment : Comment) => {
 				this.comments.push(comment);
 			});
