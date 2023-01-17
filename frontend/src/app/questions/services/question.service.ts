@@ -39,6 +39,12 @@ export class QuestionService {
     this.http.get<Question>(this.url + "/" + questionId).subscribe(_ => {});
   }
 
+  public fullTextSearch(query: string): Observable<Question[]> {
+    const obs: Observable<Question[]> = this.http.get<Question[]>(this.url + '/search/' + query);
+
+    return obs.pipe();
+  }
+
   public filterQuestionsByTag(tag: string): any {
     const obs: Observable<Question[]> = this.http.get<Question[]>(this.url + "/tags/" + tag);
 

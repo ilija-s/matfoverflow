@@ -14,6 +14,7 @@ declare const $: any
 export class AppComponent implements OnInit{
   questions: Observable<Question[]>;
   user: User | null = null;
+  query: string = "";
   sub: Subscription;
 
   constructor(private questionService: QuestionService, private auth: AuthService) {
@@ -28,6 +29,11 @@ export class AppComponent implements OnInit{
     this.questionService.selectedQuestions$.subscribe((value) => {
       this.questions = value;
     });
+  }
+
+  public fullTextSearch() {
+    console.log(this.query);
+    this.questions = this.questionService.fullTextSearch(this.query);
   }
 
   public loadQuestions() {
