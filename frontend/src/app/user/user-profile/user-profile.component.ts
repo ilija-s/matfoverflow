@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { User } from "../models/user.model";
 import { UserService } from '../services/user.service';
 
@@ -80,5 +80,29 @@ export class UserProfileComponent implements OnInit {
       this.user = new User('','','','');
     }
     this.user.email = newEmail;
+  }
+
+  public usernameHasErrors(): boolean {
+    const errors: ValidationErrors | undefined | null = this.userForm.get("username")?.errors;
+
+    console.log(errors);
+
+    return errors != null;
+  }
+
+  public nameHasErrors(): boolean {
+    const errors: ValidationErrors | undefined | null = this.userForm.get("name")?.errors;
+
+    console.log(errors);
+
+    return errors != null;
+  }
+
+  public emailHasErrors(): boolean {
+    const errors: ValidationErrors | undefined | null = this.userForm.get("email")?.errors;
+
+    console.log(errors);
+
+    return errors != null;
   }
 }
