@@ -22,13 +22,6 @@
 		<p>{{ question.description }}</p>
 		<h4 class="ui dividing header"></h4>
 	</div>
-	<form class="ui reply form">
-		<div class="field">
-		  <textarea></textarea>
-		</div>
-		<div class="ui blue labeled submit icon button">
-		  <i class="icon edit"></i> Add Comment
-		</div>
-	</form>
+	<app-comment-list [questionId]="question._id"></app-comment-list>
 </div>
-<app-comment-list></app-comment-list>
+

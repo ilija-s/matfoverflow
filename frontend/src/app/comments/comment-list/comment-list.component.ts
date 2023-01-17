@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit} from '@angular/core';
 
 import { Comment } from '../models/comment.model';
 import { CommentService } from 'src/app/services/comment.service';
@@ -8,21 +8,29 @@ import { CommentService } from 'src/app/services/comment.service';
 	templateUrl: './comment-list.component.html',
 	styleUrls: ['./comment-list.component.css']
 })
-export class CommentListComponent {
+export class CommentListComponent implements OnInit{
 	public comments : Comment[] = [];
 
-	//@Input('questionId')
-	public questionId: string = "63c541be1958205093781043";
+	@Input('questionId')
+	public questionId: string = "";
 
-	constructor(private commentService : CommentService) {
+
+	private isEditingModeOn: boolean = false;	
+
+	constructor(private commentService : CommentService) {}
+
+	ngOnInit(): void {
 		this.commentService.getComments(this.questionId).subscribe((comments: Comment[]) => {
 			this.comments = comments;
 		});
 		setInterval(() => {
-			this.refreshComments();
-			console.log("refresh");
+			if (!this.isEditingModeOn) {
+				this.refreshComments();
+			}
 		}, 10000);
 	}
+
+	
 
 	private refreshComments() {
 		this.commentService.getComments(this.questionId).subscribe((comments: Comment[]) => {
@@ -34,7 +42,10 @@ export class CommentListComponent {
 		this.comments = this.comments.filter((comment : Comment) => {
 			return comment._id != commentId;
 		});
-		
+	}
+
+	public onEditingMode(isEditingModeOn : boolean) : void {
+		this.isEditingModeOn = isEditingModeOn;
 	}
 }
 

@@ -23,10 +23,14 @@ export class CommentComponent{
 	@Output('commentEdited')
  	public emitCommentEdited : EventEmitter<string> = new EventEmitter<string>();
 
+	@Output('commentEditing')
+ 	public emitCommentEditing : EventEmitter<boolean> = new EventEmitter<boolean>();
+
 	@Input('comment')
 	public comment : Comment = new Comment(
 		"639b50e38f04137f9d2c6b29", 
 		"323132333435363738393130", 
+		'',
 		"313233343536373839313032",
 		"Can you be more specific? Why do you need Weierstrasse theoreme? ^.-",
 		-1 ,
@@ -45,6 +49,7 @@ export class CommentComponent{
 
 	public toggleEditingMode() {
 		this.editingMode = !this.editingMode;
+		this.emitCommentEditing.emit(this.editingMode);
 	}
 
 	public upvote() {

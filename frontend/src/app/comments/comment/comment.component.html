@@ -1,9 +1,9 @@
-<div class="comment">
+<div class="comment our-comment">
   <a class="avatar">
     <img src="../../../assets/user2.png">
   </a>
   <div class="content">
-    <a class="author">{{ comment.authorId }}</a>
+    <a class="author">{{ comment.authorName }}</a>
     <div class="metadata">
       <span class="date">{{ comment.updatedAt }}</span>
       <button (click)="deleteComment()"><i class="trash icon"></i></button>

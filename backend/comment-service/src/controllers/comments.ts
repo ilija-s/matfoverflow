@@ -22,12 +22,13 @@ controller.getComments = async function (req, res) {
 controller.createComment = async function (req, res) {
 
     try {
-        if(!req.body.authorId || !req.body.content) {
-            return res.status(400).json({message : "Author ID and comment content are required in request body"});
+        if(!req.body.authorId || !req.body.authorName || !req.body.content) {
+            return res.status(400).json({message : "authorID, authorName and comment content are required in request body"});
         }
     
-        const questionId = req.params.questionId;
-        const authorId = req.body.authorId;
+        const questionId : string = req.params.questionId;
+        const authorId : string = req.body.authorId;
+        const authorName : string = req.body.authorName;
 
         if (!isValidObjectId(questionId)){
             return res.status(400).json({message: "Invalid question ID"});
@@ -42,7 +43,7 @@ controller.createComment = async function (req, res) {
             return res.status(400).json({message: "Comment content can not be empty"});
         }
 
-        const comment = await commentModel._createComment(questionId, authorId, content)
+        const comment = await commentModel._createComment(questionId, authorId, authorName, content)
         res.status(200).json(comment);
     } catch (error) {
         console.error(error);
