@@ -3,7 +3,7 @@
     <app-comment *ngFor="let comment of comments" 
     [comment]="comment" 
     (commentDeleted)="onCommentDeleted($event)"
-    (commentEditing)="onEditingMode($event)">
+    (commentEditing)="onEditingModeChanged($event)">
     </app-comment>
     <form class="ui reply form">
         <div class="field">
