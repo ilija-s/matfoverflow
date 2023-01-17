@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { User } from "../models/user.model";
 
@@ -8,22 +8,20 @@ import { User } from "../models/user.model";
   styleUrls: ['./user-profile.component.css']
 })
 export class UserProfileComponent implements OnInit {
-
-  user : User;
+  @Input() user: User | null = null;
   showChangeFields : boolean;
 
   userForm!: FormGroup;
 
   constructor() {
-    this.user = new User("peraperic", "pera@gmail.com", "Pera Peric", "../../../assets/download.png");
     this.showChangeFields = false;
   }
 
   ngOnInit(): void {
     this.userForm = new FormGroup({
-      username: new FormControl(this.user.username, [Validators.pattern(/[a-zA-Z0-9_-]{8,}/)]),
-      email: new FormControl(this.user.email, [Validators.email]),
-      name: new FormControl(this.user.name, [Validators.min(2)]),
+      username: new FormControl('', [Validators.required, Validators.pattern(/[a-zA-Z0-9_-]{4,}/)]),
+      email: new FormControl('', [Validators.required, Validators.email]),
+      name: new FormControl('', [Validators.required, Validators.min(2)]),
       imgUrl: new FormControl(""),
     });
   }
@@ -34,6 +32,10 @@ export class UserProfileComponent implements OnInit {
     if (this.userForm.invalid){
       window.alert('Form is not valid. Please, try again!');
       return;
+    }
+
+    if(!this.user) {
+      this.user = new User('','','','');
     }
 
     this.user.name = data.name;
@@ -49,6 +51,10 @@ export class UserProfileComponent implements OnInit {
     this.disableChangeFields();
   }
 
+  togglaChangeFields() {
+    this.showChangeFields = !this.showChangeFields;
+  }
+
   enableChangeFields() {
     this.showChangeFields = true;
   }
@@ -59,11 +65,17 @@ export class UserProfileComponent implements OnInit {
 
   onChangeName(ev: Event) {
     const newName : string = (ev.target as HTMLInputElement).value;
+    if(!this.user) {
+      this.user = new User('','','','');
+    }
     this.user.name = newName;
   }
 
   onChangeEmail(ev: Event) {
     const newEmail : string = (ev.target as HTMLInputElement).value;
+    if(!this.user) {
+      this.user = new User('','','','');
+    }
     this.user.email = newEmail;
   }
 }
