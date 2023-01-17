@@ -1,5 +1,8 @@
-import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
+import { AuthService } from 'src/app/services/auth.service';
+import { User } from 'src/app/user/models/user.model';
 import { Question } from '../models/question.model';
 import { QuestionService } from '../services/question.service';
 import { QuestionNameValidator } from '../validators/question-name-validator';
@@ -15,17 +18,27 @@ export class CreateQuestionComponent implements OnInit{
   // @ViewChild('inputDescription', { static: false }) inputDescription: ElementRef | undefined;
 
   @Output() questionCreated: EventEmitter<Question> = new EventEmitter<Question>();
-  
+  public sub: Subscription;
+  user: User | null = null;
   createQuestionForm!: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private questionService: QuestionService){
-    this.createQuestionForm = this.formBuilder.group({
-      title: ['', [Validators.required, Validators.minLength(5), QuestionNameValidator]],
-      description: ['', [Validators.required, Validators.minLength(30)]],
-      user: 'HARDCODED USER',
-      tags: [""]
-    });
-  }
+  constructor(private formBuilder: FormBuilder, 
+    private questionService: QuestionService,
+    private authService: AuthService){
+
+  this.sub = this.authService.user.subscribe((user: User | null) => {
+    this.user = user;
+  });
+
+  this.authService.sendUserDataIfExists();
+
+  this.createQuestionForm = this.formBuilder.group({
+    title: ['', [Validators.required, Validators.minLength(5), QuestionNameValidator]],
+    description: ['', [Validators.required, Validators.minLength(30)]],
+    tags: [""]
+  });
+}
+
   
   ngOnInit(): void {
   }
@@ -37,13 +50,15 @@ export class CreateQuestionComponent implements OnInit{
       window.alert('Form is not valid. Please, try again!');
       return;
     }
-
     const title: string = this.createQuestionForm.value['title'];
     const description: string = this.createQuestionForm.value['description'];
-    const user: string = this.createQuestionForm.value['user'];
     const tags: string[] = this.createQuestionForm.value['tags'];
-    const response: any = this.questionService.addNewQuestion(title, description, user, tags);
-    console.log(response);
+
+    if (this.user !== null) {
+      this.questionService.addNewQuestion(title, description, this.user.username, tags);
+    } else {
+      window.alert("You need to be logged in to ask a question.");
+    }
 
     this.createQuestionForm.reset({
         title: "",
