@@ -42,6 +42,10 @@ export class RegisterFormComponent implements OnInit {
 
     this.sub = obs.subscribe((user: User | null) => {
       console.log(user)
+    },
+    (error : string) => 
+    {
+      alert("Username already exists!");
     });
   }
 

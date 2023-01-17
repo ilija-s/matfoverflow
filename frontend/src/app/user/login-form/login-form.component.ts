@@ -36,6 +36,10 @@ export class LoginFormComponent implements OnInit{
 
     this.sub = obs.subscribe((user: User | null) => {
       console.log(user)
+    },
+    (error : string) =>
+    {
+      alert("Invalid username or password!");
     });
 
     this.authService.login(data.username, data.password);

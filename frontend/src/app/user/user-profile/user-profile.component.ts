@@ -24,8 +24,7 @@ export class UserProfileComponent implements OnInit {
     this.userForm = new FormGroup({
       username: new FormControl(this.user?.username, [Validators.required, Validators.pattern(/[a-zA-Z0-9_-]{4,}/)]),
       email: new FormControl(this.user?.email, [Validators.required, Validators.email]),
-      name: new FormControl(this.user?.name, [Validators.required, Validators.min(2)]),
-      imgUrl: new FormControl(""),
+      name: new FormControl(this.user?.name, [Validators.required, Validators.min(2)])
     });
   }
 
