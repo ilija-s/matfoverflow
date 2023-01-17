@@ -32,17 +32,36 @@ export class CreateQuestionComponent implements OnInit{
 
   public onCreateQuestionSubmit(): void {
     console.log(this.createQuestionForm.value);
+
+    if (this.createQuestionForm.invalid){
+      window.alert('Form is not valid. Please, try again!');
+      return;
+    }
+
     const title: string = this.createQuestionForm.value['title'];
     const description: string = this.createQuestionForm.value['description'];
     const user: string = this.createQuestionForm.value['user'];
     const tags: string[] = this.createQuestionForm.value['tags'];
     const response: any = this.questionService.addNewQuestion(title, description, user, tags);
     console.log(response);
+
+    this.createQuestionForm.reset({
+        title: "",
+        description: ""
+    });
   }
 
   //TREBA POPRAVITI
   public titleHasErrors(): boolean {
     const errors: ValidationErrors | undefined | null = this.createQuestionForm.get("title")?.errors;
+
+    console.log(errors);
+
+    return errors != null;
+  }
+
+  public descriptionHasErrors(): boolean {
+    const errors: ValidationErrors | undefined | null = this.createQuestionForm.get("description")?.errors;
 
     console.log(errors);
 
