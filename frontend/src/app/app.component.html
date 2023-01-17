@@ -4,7 +4,7 @@
 
   <div style = "background-color: rgb(194, 221, 240);" class="ui top attached tabular menu">
     <a style = "font-size: large;" class="item" data-tab="dtQuestions" (click)="loadQuestions()">Questions</a>
-    <a style = "font-size: large;" class="item" data-tab="dtAddNewQuestion" *ngIf="user !== null">Add new question</a>
+    <a style = "font-size: large;" class="item" data-tab="dtAddNewQuestion">Add new question</a>
     <a style = "font-size: large;" class="right item" data-tab="dtUserProfile">User profile</a>
   </div>
 
@@ -12,8 +12,11 @@
     <app-question-list [questions]="questions"></app-question-list>
   </div>
 
-  <div class="ui bottom attached tab segment" data-tab="dtAddNewQuestion" *ngIf="user !== null">
-    <app-create-question (questionCreated)="onQuestionCreated($event)"></app-create-question>
+  <div class="ui bottom attached tab segment" data-tab="dtAddNewQuestion">
+    <app-create-question (questionCreated)="onQuestionCreated($event)" *ngIf="user !== null; else cantCreateQuestion"></app-create-question>
+    <ng-template #cantCreateQuestion>
+      <p style="font-size: large;">You must <a>login</a> to create a question</p>
+    </ng-template>
   </div>
 
   <div class="ui bottom attached tab segment" data-tab="dtUserProfile">
