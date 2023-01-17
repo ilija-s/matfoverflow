@@ -1,16 +1,22 @@
 const express = require("express");
-const usersContorller = require('../controller/users');
+const userController = require('../controller/users');
+const authentication = require('../utils/authentication');
+
 
 const router = express.Router();
 
-router.get('/', usersContorller.getAllUsers);
+router.get('/', userController.getAllUsers);
 
-router.get('/:username', usersContorller.getUserByUsername);
+router.get('/:username', userController.getUserByUsername);
 
-router.post('/', usersContorller.addNewUser);
+router.post('/login', authentication.canAuthenticate, userController.loginUser);
 
-router.put('/:username', usersContorller.changeUserPassword);
+router.post('/', userController.addNewUser);
 
-router.delete('/:username', usersContorller.deleteUser);
+router.patch('/', authentication.isAuthenticated, userController.changeUserInfoData);
+
+router.put('/:username', userController.changeUserPassword);
+
+router.delete('/:username', userController.deleteUser);
 
 module.exports = router;
