@@ -1,10 +1,10 @@
 <form class="ui form" [formGroup]="loginForm" (ngSubmit)="login()">
-    <div class="required field">
+    <div class="required field" [ngClass]="{ error: usernameHasErrors() }">
         <label>Username</label>
         <input type="text" placeholder="Username" formControlName="username"> 
     </div>
 
-    <div class="required field">
+    <div class="required field" [ngClass]="{ error: passwordHasErrors() }">
         <label>Password</label>
         <input type="password" placeholder="Password" formControlName="password">  
     </div>

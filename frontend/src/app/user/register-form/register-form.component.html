@@ -19,7 +19,7 @@
         <input type="email" placeholder="Email" formControlName="email"> 
     </div>
 
-    <div class="field">
+    <div class="required field" [ngClass]="{ error: courseHasErrors() }">
         <label>Course</label>
         <input type="text" placeholder="Course" formControlName="course"> 
     </div>

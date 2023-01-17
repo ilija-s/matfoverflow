@@ -77,4 +77,12 @@ export class RegisterFormComponent implements OnInit {
     return errors != null;
   }
 
+  public courseHasErrors(): boolean {
+    const errors: ValidationErrors | undefined | null = this.registerForm.get("course")?.errors;
+
+    console.log(errors);
+
+    return errors != null;
+  }
+
 }
