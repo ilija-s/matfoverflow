@@ -33,11 +33,12 @@ controller.getComments = function (req, res) {
 controller.createComment = function (req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            if (!req.body.authorId || !req.body.content) {
-                return res.status(400).json({ message: "Author ID and comment content are required in request body" });
+            if (!req.body.authorId || !req.body.authorName || !req.body.content) {
+                return res.status(400).json({ message: "authorID, authorName and comment content are required in request body" });
             }
             const questionId = req.params.questionId;
             const authorId = req.body.authorId;
+            const authorName = req.body.authorName;
             if (!(0, mongoose_1.isValidObjectId)(questionId)) {
                 return res.status(400).json({ message: "Invalid question ID" });
             }
@@ -48,7 +49,7 @@ controller.createComment = function (req, res) {
             if (content.trim() == "") {
                 return res.status(400).json({ message: "Comment content can not be empty" });
             }
-            const comment = yield comments_1.default._createComment(questionId, authorId, content);
+            const comment = yield comments_1.default._createComment(questionId, authorId, authorName, content);
             res.status(200).json(comment);
         }
         catch (error) {

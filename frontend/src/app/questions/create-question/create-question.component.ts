@@ -17,6 +17,8 @@ export class CreateQuestionComponent implements OnInit{
   // @ViewChild('inputTitle', { static: false }) inputTitle: ElementRef | undefined;
   // @ViewChild('inputDescription', { static: false }) inputDescription: ElementRef | undefined;
 
+  public sub: Subscription;
+  user: User | null = null;
   @Output() questionCreated: EventEmitter<Question> = new EventEmitter<Question>();
   public sub: Subscription;
   user: User | null = null;
@@ -38,7 +40,6 @@ export class CreateQuestionComponent implements OnInit{
     tags: [""]
   });
 }
-
   
   ngOnInit(): void {
   }

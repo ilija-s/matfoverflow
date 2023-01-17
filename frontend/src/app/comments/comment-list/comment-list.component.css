@@ -1,0 +1,7 @@
+.light-blue {
+    background-color: rgb(194, 221, 240);
+}
+
+.light-blue:hover {
+    background-color: rgb(100, 221, 240);
+}

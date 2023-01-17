@@ -1,26 +1,37 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit, Output} from '@angular/core';
 
 import { Comment } from '../models/comment.model';
 import { CommentService } from 'src/app/services/comment.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
 	selector: 'app-comment-list',
 	templateUrl: './comment-list.component.html',
 	styleUrls: ['./comment-list.component.css']
 })
-export class CommentListComponent {
+export class CommentListComponent implements OnInit{
 	public comments : Comment[] = [];
 
-	//@Input('questionId')
-	public questionId: string = "63c541be1958205093781043";
+	@Input('questionId')
+	public questionId: string = "";
 
-	constructor(private commentService : CommentService) {
+	public isEditingModeOn: boolean = false;	
+	public commentForm: FormGroup;
+
+	constructor(private commentService : CommentService, private formBuilder : FormBuilder) {
+		this.commentForm = this.formBuilder.group({
+			content : ["", [Validators.required, Validators.minLength(2)]]
+		})
+	}
+
+	ngOnInit(): void {
 		this.commentService.getComments(this.questionId).subscribe((comments: Comment[]) => {
 			this.comments = comments;
 		});
 		setInterval(() => {
-			this.refreshComments();
-			console.log("refresh");
+			if (!this.isEditingModeOn) {
+				this.refreshComments();
+			}
 		}, 10000);
 	}
 
@@ -34,7 +45,24 @@ export class CommentListComponent {
 		this.comments = this.comments.filter((comment : Comment) => {
 			return comment._id != commentId;
 		});
-		
+	}
+
+	public onEditingModeChanged(isEditingModeOn : boolean) : void {
+		this.isEditingModeOn = isEditingModeOn;
+	}
+
+	public postComment(form : {content : string}) : void {
+		form.content = form.content.trim();
+		if (form.content.length == 0){
+			alert("Comment content can non be empty!");
+			return;
+		}
+
+		this.commentService.postComment(this.questionId, "1148a2d211a47ca32ee1f42f", "gojko33", form.content)
+			.subscribe((comment : Comment) => {
+				this.comments.push(comment);
+			});
+
+		this.commentForm.controls["content"].setValue("");
 	}
 }
-

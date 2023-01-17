@@ -6,6 +6,7 @@ export class Comment {
 		public _id: string,
 		public questionId: string,
 		public authorId: string,
+		public authorName: string,
 		public content: string,
 		public votes: number,
 		public upvotes: string,

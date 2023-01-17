@@ -1,5 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AuthService } from 'src/app/services/auth.service';
 import { User } from "../models/user.model";
 import { UserService } from '../services/user.service';
 
@@ -11,9 +12,10 @@ import { UserService } from '../services/user.service';
 export class UserProfileComponent implements OnInit {
   @Input() user: User | null = null;
   showChangeFields : boolean;
+  logOutCheck : boolean = false;
   userForm!: FormGroup;
-
-  constructor(private userService: UserService) {
+  
+  constructor(private authService : AuthService) {
     this.showChangeFields = false;
   }
 
@@ -106,5 +108,9 @@ export class UserProfileComponent implements OnInit {
     console.log(errors);
 
     return errors != null;
+  }
+
+  public logout(){
+    this.authService.logout();
   }
 }

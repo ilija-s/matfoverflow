@@ -22,6 +22,10 @@ const commentSchema = new mongoose_1.default.Schema({
         type: mongoose_1.default.Schema.Types.ObjectId,
         required: true
     },
+    authorName: {
+        type: String,
+        required: true
+    },
     content: {
         type: String,
         required: true
@@ -56,12 +60,13 @@ _model._getComments = function (questionId) {
         return comments;
     });
 };
-_model._createComment = function (questionId, authorId, content) {
+_model._createComment = function (questionId, authorId, authorName, content) {
     return __awaiter(this, void 0, void 0, function* () {
         const newComment = new commentModel();
         newComment._id = new mongoose_1.default.Types.ObjectId();
         newComment.questionId = new mongoose_1.default.Types.ObjectId(questionId);
         newComment.authorId = new mongoose_1.default.Types.ObjectId(authorId);
+        newComment.authorName = authorName;
         newComment.content = content;
         const commentFromDB = yield newComment.save({ timestamps: true });
         return commentFromDB;
