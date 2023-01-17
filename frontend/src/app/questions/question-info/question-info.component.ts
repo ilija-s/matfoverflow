@@ -25,9 +25,14 @@ export class QuestionInfoComponent implements OnInit {
     this.questionService.sendVoteForQuestion(question._id, "HARDCODED USER", "downvote");
   }
 
-  public viewQuestion(question: Question): void {
-    this.questionService.setQuestion(question);
+  public viewQuestion(questionInfo: Question): void {
+    this.questionService.getQuestion(questionInfo._id);
+    this.questionService.setQuestion(questionInfo);
     this.questionService.setIsSelectedQuestion(true);
   }
 
+  public filterQuestionsByTag(tag: string): void {
+    const questions: any = this.questionService.filterQuestionsByTag(tag);
+    this.questionService.setQuestions(questions);
+  }
 }

@@ -10,6 +10,8 @@ export class QuestionService {
   private readonly url = "http://localhost:4000/questions";
   private question$ = new BehaviorSubject<any>({});
   selectedQuestion$ = this.question$.asObservable();
+  private questions$ = new BehaviorSubject<any>({});
+  selectedQuestions$ = this.questions$.asObservable();
   private isSelectedQuestion$ = new BehaviorSubject<any>({});
   isSelectedQuestionObs$ = this.isSelectedQuestion$.asObservable();
 
@@ -19,12 +21,26 @@ export class QuestionService {
     this.question$.next(question);
   }
 
+  setQuestions(questions: any) {
+    this.questions$.next(questions);
+  }
+
   setIsSelectedQuestion(value: any) {
     this.isSelectedQuestion$.next(value);
   }
 
   public getQuestions(): Observable<Question[]> {
     const obs: Observable<Question[]> = this.http.get<Question[]>(this.url);
+
+    return obs.pipe();
+  }
+
+  public getQuestion(questionId: string): void {
+    this.http.get<Question>(this.url + "/" + questionId).subscribe(_ => {});
+  }
+
+  public filterQuestionsByTag(tag: string): any {
+    const obs: Observable<Question[]> = this.http.get<Question[]>(this.url + "/tags/" + tag);
 
     return obs.pipe();
   }

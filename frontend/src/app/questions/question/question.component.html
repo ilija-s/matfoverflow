@@ -1,1 +1,34 @@
-<app-comment-list></app-comment-list>
+<div class="ui two row doubling stackable grid container">
+    <div class="content row">
+		<h2 class="ui header">{{ question.title }}</h2>
+		<div class="extra">
+			<h4>Asked at {{ question.createdAt }}</h4>
+			<h4>Viewed <a>{{ question.views }}</a> times</h4>
+			<h4 class="ui dividing header"></h4>
+			<br>
+		</div>
+		<p>{{ question.description }}</p>
+		<div class="extra">
+			<div *ngIf="!(question.tags[0].length == 0)">
+				<div class="ui label" *ngFor="let tag of question.tags">{{ tag }}</div>
+			</div>
+			<p><a>{{ question.author }}</a>'s question</p>
+			<h4 class="ui dividing header"></h4>
+			<h2>{{ question.answers }} answers</h2>
+			<h4 class="ui dividing header"></h4>
+		</div>
+    </div>
+	<div class="content row">
+		<p>{{ question.description }}</p>
+		<h4 class="ui dividing header"></h4>
+	</div>
+	<form class="ui reply form">
+		<div class="field">
+		  <textarea></textarea>
+		</div>
+		<div class="ui blue labeled submit icon button">
+		  <i class="icon edit"></i> Add Comment
+		</div>
+	</form>
+</div>
+<app-comment-list [questionId]="question._id"></app-comment-list>

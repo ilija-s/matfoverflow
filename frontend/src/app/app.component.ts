@@ -18,6 +18,9 @@ export class AppComponent implements OnInit{
 
   ngOnInit(): void {
     $('.menu .item').tab();
+    this.questionService.selectedQuestions$.subscribe((value) => {
+      this.questions = value;
+    });
   }
 
   public loadQuestions() {

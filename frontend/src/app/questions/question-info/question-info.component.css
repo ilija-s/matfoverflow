@@ -4,3 +4,11 @@ p {
 	text-overflow: ellipsis;
 	max-width: 100ch;
   }
+
+h2 {
+	cursor: pointer;
+}
+
+#tags {
+	cursor: pointer;
+}

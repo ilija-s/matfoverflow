@@ -10,21 +10,22 @@
                 </button>
                 <h3>{{ question.votes }} votes</h3>
                 <h3>{{ question.views }} views</h3>
-                <h3>{{ question.answers }} answers</h3>
             </div>
         </div>
         <div class="fourteen wide column">
-            <h3>{{ question.title }}</h3>
+            <h2><a class="header" (click)="viewQuestion(question)">{{ question.title }}</a></h2>
             <div class="description">
                 <p>{{ question.description }}</p>
             </div>
             <div class="extra">
+                <div *ngIf="!(question.tags[0].length == 0)">
+                    <br>
+                    <div id="tags" class="ui label" *ngFor="let tag of question.tags" (click)="filterQuestionsByTag(tag)">{{ tag }}</div>
+                </div>
+                <br>
                 <p><a>{{ question.author }}</a>'s question</p>
-                Tags: 
-                <div class="ui label" *ngFor="let tag of question.tags">{{ tag }}</div>
             </div>
-            <br>
-            <button type="button" class="ui basic blue button" (click)="viewQuestion(question)">View question</button>
+            <h4 class="ui dividing header"></h4>
         </div>
     </div>
 </div>
