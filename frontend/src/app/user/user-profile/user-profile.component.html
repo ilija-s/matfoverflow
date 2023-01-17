@@ -19,15 +19,15 @@
     <div class="twelve wide column ">
         <button class = "ui button" style = "background-color: coral; color: white; margin: 10px;" (click)="togglaChangeFields()">Change profile info</button>
         <form [formGroup]="userForm" (ngSubmit)="onUserFormSubmit()" class="ui form" *ngIf="showChangeFields; else changeUserInfo">
-            <div class="required fluid field" [ngClass]="{ error: usernameHasErrors() }">
+            <div class="required fluid field" [ngClass]="{ error: usernameHasErrors() }" style="width:20%">
                 <label>Username</label>
-                <input type="text" formControlName="username" >
+                <input type="text" formControlName="username">
             </div>
-            <div class="required fluid field" [ngClass]="{ error: nameHasErrors() }">
+            <div class="required fluid field" [ngClass]="{ error: nameHasErrors() }" style="width:20%">
                 <label>Name</label>
                 <input type = "text" formControlName="name" >
             </div>
-            <div class="required fluid field" [ngClass]="{ error: emailHasErrors() }">
+            <div class="required fluid field" [ngClass]="{ error: emailHasErrors() }" style="width:20%">
                 <label>Email</label>
                 <input type="email" formControlName="email" >
             </div>
