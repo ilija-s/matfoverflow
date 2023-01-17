@@ -17,25 +17,25 @@
     </div>
 
     <div class="twelve wide column ">
-        <button class = "ui button" style = "background-color: rgb(194, 221, 240); margin: 10px;" (click)="togglaChangeFields()">Change profile info</button>
+        <button class = "ui button" style = "background-color: coral; color: white; margin: 10px;" (click)="togglaChangeFields()">Change profile info</button>
         <form [formGroup]="userForm" (ngSubmit)="onUserFormSubmit()" class="ui form" *ngIf="showChangeFields; else changeUserInfo">
-            <div>
+            <div class="required fluid field" [ngClass]="{ error: usernameHasErrors() }" style="width:20%">
                 <label>Username</label>
                 <input type="text" formControlName="username">
             </div>
-            <div>
+            <div class="required fluid field" [ngClass]="{ error: nameHasErrors() }" style="width:20%">
                 <label>Name</label>
-                <input type = "text" formControlName="name">
+                <input type = "text" formControlName="name" >
             </div>
-            <div>
+            <div class="required fluid field" [ngClass]="{ error: emailHasErrors() }" style="width:20%">
                 <label>Email</label>
-                <input type="email" formControlName="email">
+                <input type="email" formControlName="email" >
             </div>
             <div class = "form-group">
                 <label>Choose a profile picture</label>
                 <input type="file" formControlName="imgUrl">
             </div>
-            <button class = "ui button" type="submit" style = "background-color: rgb(194, 221, 240); margin: 10px;">Save changes</button>
+            <button class = "ui button" type="submit" style ="background-color: coral; color: white; margin: 10px;">Save changes</button>
         </form>
 
         <ng-template #changeUserInfo>

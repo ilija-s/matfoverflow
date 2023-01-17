@@ -1,15 +1,15 @@
 <form class="ui form" [formGroup]="loginForm" (ngSubmit)="login()">
-    <div class="required field">
+    <div class="required field" [ngClass]="{ error: usernameHasErrors() }" style="width:20%">
         <label>Username</label>
         <input type="text" placeholder="Username" formControlName="username"> 
     </div>
 
-    <div class="required field">
+    <div class="required field" [ngClass]="{ error: passwordHasErrors() }" style="width:20%">
         <label>Password</label>
         <input type="password" placeholder="Password" formControlName="password">  
     </div>
 
-    <button class="ui button" type="submit" style = "background-color: rgb(194, 221, 240); margin: 10px;">
+    <button class="ui button" type="submit" style = "background-color: coral; color: white; margin: 10px;">
         Login
     </button>
 </form> 

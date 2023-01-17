@@ -10,7 +10,7 @@ import { User } from '../models/user.model';
 })
 export class UserService {
   private readonly urls = {
-    patchUser: "http://localhost:3000/users",
+    patchUser: "http://localhost:3000/users/",
   }
 
   constructor(private http: HttpClient,
@@ -19,12 +19,16 @@ export class UserService {
 
   public patchUserData(username: string, email: string, name: string): Observable<User> {
     const body = {username, email, name};
+    console.log(body);
+    console.log(this.jwtService.getToken());
     const headers: HttpHeaders = new HttpHeaders().append("Authorization", `Bearer ${this.jwtService.getToken()}`);
 
-    return this.http.patch<{token: string}>(this.urls.patchUser, body, {headers}).pipe(
+    const obs: Observable<{token: string}> = this.http.patch<{token: string}>(this.urls.patchUser, body, {headers});
+
+    return obs.pipe(
         tap((response: {token: string}) => this.jwtService.setToken(response.token)),
         map((response: {token: string}) => this.authService.sendUserDataIfExists()!)
-    )
+    );
   }
 
 }
