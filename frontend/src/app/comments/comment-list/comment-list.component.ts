@@ -14,7 +14,6 @@ export class CommentListComponent implements OnInit{
 	@Input('questionId')
 	public questionId: string = "";
 
-
 	private isEditingModeOn: boolean = false;	
 
 	constructor(private commentService : CommentService) {}
@@ -30,8 +29,6 @@ export class CommentListComponent implements OnInit{
 		}, 10000);
 	}
 
-	
-
 	private refreshComments() {
 		this.commentService.getComments(this.questionId).subscribe((comments: Comment[]) => {
 			this.comments = comments;
@@ -44,7 +41,7 @@ export class CommentListComponent implements OnInit{
 		});
 	}
 
-	public onEditingMode(isEditingModeOn : boolean) : void {
+	public onEditingModeChanged(isEditingModeOn : boolean) : void {
 		this.isEditingModeOn = isEditingModeOn;
 	}
 }

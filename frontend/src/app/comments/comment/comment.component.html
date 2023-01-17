@@ -17,13 +17,16 @@
       </i>
     </div>
     <div *ngIf="editingMode">
-      <form class="ui reply form">
+      <form class="ui reply form" [formGroup]="editForm" (ngSubmit)="editComment(editForm.value)">
         <div class="field">
-          <textarea>{{ comment.content }}</textarea>
+          <textarea formControlName="content"></textarea>
         </div>
-        <div class="ui labeled light-blue submit icon button">
+        <button 
+          class="ui labeled light-blue submit icon button" 
+          type="submit" 
+          [disabled]="!editForm.valid">
           <i class="icon edit"></i> Save
-        </div>
+        </button>
       </form>
     </div>
     <div *ngIf="!editingMode" class="text">
