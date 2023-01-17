@@ -13,10 +13,6 @@ import { QuestionNameValidator } from '../validators/question-name-validator';
   styleUrls: ['./create-question.component.css']
 })
 export class CreateQuestionComponent implements OnInit{
-
-  // @ViewChild('inputTitle', { static: false }) inputTitle: ElementRef | undefined;
-  // @ViewChild('inputDescription', { static: false }) inputDescription: ElementRef | undefined;
-
   public sub: Subscription;
   @Output() questionCreated: EventEmitter<Question> = new EventEmitter<Question>();
   user: User | null = null;
@@ -65,7 +61,6 @@ export class CreateQuestionComponent implements OnInit{
     });
   }
 
-  //TREBA POPRAVITI
   public titleHasErrors(): boolean {
     const errors: ValidationErrors | undefined | null = this.createQuestionForm.get("title")?.errors;
 
@@ -81,26 +76,4 @@ export class CreateQuestionComponent implements OnInit{
 
     return errors != null;
   }
-
-
-
-  // public addNewQuestion(): void{
-  //   const title: string = (this.inputTitle?.nativeElement as HTMLInputElement).value;
-  //   const description: string = (this.inputDescription?.nativeElement as HTMLTextAreaElement).value;
-
-  //   if ( title.length < 10 ) {
-  //     window.alert("Title must be at least 10 characters long")
-  //     return;
-  //   }
-
-  //   if ( description.length < 10 ) {
-  //     window.alert("Description must be at least 10 characters long")
-  //     return;
-  //   }
-
-  //   const newQuestion: Question = new Question(title, description, "New Author");
-
-  //   this.questionCreated.emit(newQuestion);
-  // }
-
 }
