@@ -1,5 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from 'src/app/services/auth.service';
 import { User } from "../models/user.model";
 
 @Component({
@@ -10,10 +11,10 @@ import { User } from "../models/user.model";
 export class UserProfileComponent implements OnInit {
   @Input() user: User | null = null;
   showChangeFields : boolean;
-
+  logOutCheck : boolean = false;
   userForm!: FormGroup;
-
-  constructor() {
+  
+  constructor(private authService : AuthService) {
     this.showChangeFields = false;
   }
 
@@ -77,5 +78,13 @@ export class UserProfileComponent implements OnInit {
       this.user = new User('','','','');
     }
     this.user.email = newEmail;
+  }
+
+  public logout(){
+    // this.logOutCheck = true;
+    // // this.user = null;
+    // this.logOutUser.emit(null);
+    // alert(this.user);
+    this.authService.logout();
   }
 }
