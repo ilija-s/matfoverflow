@@ -13,6 +13,8 @@ import { QuestionComponent } from './questions/question/question.component';
 import { LoginFormComponent } from './user/login-form/login-form.component';
 import { RegisterFormComponent } from './user/register-form/register-form.component';
 import { UserInfoComponent } from './user/user-info/user-info.component';
+import { CommentComponent } from './comments/comment/comment.component';
+import { CommentListComponent } from './comments/comment-list/comment-list.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,9 @@ import { UserInfoComponent } from './user/user-info/user-info.component';
     QuestionComponent,
     LoginFormComponent,
     RegisterFormComponent,
-    UserInfoComponent
+    UserInfoComponent,
+    CommentComponent,
+    CommentListComponent
   ],
   imports: [
     BrowserModule,
