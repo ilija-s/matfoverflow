@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { User } from "../models/user.model";
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -10,24 +11,25 @@ import { User } from "../models/user.model";
 export class UserProfileComponent implements OnInit {
   @Input() user: User | null = null;
   showChangeFields : boolean;
-
   userForm!: FormGroup;
 
-  constructor() {
+  constructor(private userService: UserService) {
     this.showChangeFields = false;
   }
 
   ngOnInit(): void {
     this.userForm = new FormGroup({
-      username: new FormControl('', [Validators.required, Validators.pattern(/[a-zA-Z0-9_-]{4,}/)]),
-      email: new FormControl('', [Validators.required, Validators.email]),
-      name: new FormControl('', [Validators.required, Validators.min(2)]),
+      username: new FormControl(this.user?.username, [Validators.required, Validators.pattern(/[a-zA-Z0-9_-]{4,}/)]),
+      email: new FormControl(this.user?.email, [Validators.required, Validators.email]),
+      name: new FormControl(this.user?.name, [Validators.required, Validators.min(2)]),
       imgUrl: new FormControl(""),
     });
   }
 
   public onUserFormSubmit(): void {
     const data = this.userForm.value;
+
+    console.log(this.user);
 
     if (this.userForm.invalid){
       window.alert('Form is not valid. Please, try again!');
@@ -38,10 +40,11 @@ export class UserProfileComponent implements OnInit {
       this.user = new User('','','','');
     }
 
-    this.user.name = data.name;
-    this.user.username = data.username;
-    this.user.email = data.email;
-
+    this.userService.patchUserData(data.username, data.name, data.email);
+    // this.user.name = data.name;
+    // this.user.username = data.username;
+    // this.user.email = data.email;
+    console.log(this.user);
     this.userForm.reset({
       username : this.user.username,
       name : this.user.name,
