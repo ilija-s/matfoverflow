@@ -30,14 +30,14 @@ const addNewUser = async (req, res, next) => {
   const imageUrl = "https://lh3.googleusercontent.com/ogw/AOh-ky0F1k8_Yp3mtwyp3xGVgZIrsf0zbxGUlffrRBoJ2mo=s32-c-mo";
   let user = await User.findUser(username);
   if (size(user) == 0) {
-    let newUser = await User.addNewUser(username, password, email, name, imageUrl, course);
-    if (!newUser) {
+    let token = await User.addNewUser(username, password, email, name, imageUrl, course);
+    if (!token) {
       res.json('{ error: "Error while trying to create a new user."}').status(400);
     } else {
-      res.json(newUser);
+      res.json({ token });
     }
   } else {
-    res.json(`{ msg: "User ${username} already exists" }`).status(400);
+    res.json(`{ msg: "User {user.username} already exists" }`).status(400);
   }
 };
 
