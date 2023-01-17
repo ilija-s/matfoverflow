@@ -15,7 +15,8 @@ export class UserProfileComponent implements OnInit {
   logOutCheck : boolean = false;
   userForm!: FormGroup;
   
-  constructor(private authService : AuthService) {
+  constructor(private authService : AuthService,
+              private userService: UserService) {
     this.showChangeFields = false;
   }
 

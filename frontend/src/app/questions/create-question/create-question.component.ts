@@ -18,9 +18,7 @@ export class CreateQuestionComponent implements OnInit{
   // @ViewChild('inputDescription', { static: false }) inputDescription: ElementRef | undefined;
 
   public sub: Subscription;
-  user: User | null = null;
   @Output() questionCreated: EventEmitter<Question> = new EventEmitter<Question>();
-  public sub: Subscription;
   user: User | null = null;
   createQuestionForm!: FormGroup;
 
