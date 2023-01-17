@@ -23,10 +23,12 @@ export class UserService {
     console.log(this.jwtService.getToken());
     const headers: HttpHeaders = new HttpHeaders().append("Authorization", `Bearer ${this.jwtService.getToken()}`);
 
-    return this.http.patch<{token: string}>(this.urls.patchUser, body, {headers}).pipe(
-        tap((response: {token: string}) => {this.jwtService.setToken(response.token); console.log(response.token)}),
+    const obs: Observable<{token: string}> = this.http.patch<{token: string}>(this.urls.patchUser, body, {headers})
+
+    return obs.pipe(
+        tap((response: {token: string}) => this.jwtService.setToken(response.token)),
         map((response: {token: string}) => this.authService.sendUserDataIfExists()!)
-    )
+    );
   }
 
 }
