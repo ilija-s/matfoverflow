@@ -41,6 +41,8 @@ const questionSchema = new mongoose.Schema({
 	}
 }, { collection: "questions", timestamps: true });
 
+questionSchema.index({title: 'text', description: 'text', tags: 'text'});
+
 const QuestionModel = mongoose.model('Question', questionSchema);
 
 module.exports.model = QuestionModel
