@@ -1,13 +1,16 @@
 <div class="ui comments">
     <h3 class="ui dividing header">Comments</h3>
-    <app-comment *ngFor="let comment of comments" [comment]="comment" (commentDeleted)="onCommentDeleted($event)">
+    <app-comment *ngFor="let comment of comments" 
+    [comment]="comment" 
+    (commentDeleted)="onCommentDeleted($event)"
+    (commentEditing)="onEditingMode($event)">
     </app-comment>
     <form class="ui reply form">
         <div class="field">
           <textarea></textarea>
         </div>
-        <div class="ui blue labeled submit icon button">
-          <i class="icon edit"></i> Add Reply
+        <div class="ui light-blue labeled submit icon button">
+          <i class="icon edit"></i> Add Comment
         </div>
     </form>
 </div>

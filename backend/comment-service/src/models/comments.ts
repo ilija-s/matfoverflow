@@ -10,6 +10,10 @@ const commentSchema = new mongoose.Schema({
         type : mongoose.Schema.Types.ObjectId,
         required : true
     },
+    authorName : {
+        type : String,
+        required : true
+    },
     content : {
         type : String,
         required : true
@@ -48,11 +52,12 @@ _model._getComments = async function (questionId : string){
     return comments;
 }
 
-_model._createComment = async function (questionId : string, authorId : string, content : string) {
+_model._createComment = async function (questionId : string, authorId : string, authorName : string, content : string) {
     const newComment = new commentModel();
     newComment._id = new mongoose.Types.ObjectId();
     newComment.questionId = new mongoose.Types.ObjectId(questionId);
     newComment.authorId = new mongoose.Types.ObjectId(authorId);
+    newComment.authorName = authorName;
     newComment.content = content;
 
     const commentFromDB = await newComment.save({timestamps : true});
