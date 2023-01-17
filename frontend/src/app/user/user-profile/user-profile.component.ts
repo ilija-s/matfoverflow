@@ -36,22 +36,24 @@ export class UserProfileComponent implements OnInit {
       return;
     }
 
-    if(!this.user) {
-      this.user = new User('','','','');
-    }
+    this.userService.patchUserData(data.username, data.email, data.name).subscribe((user: User) => {
+      if(!this.user) {
+        this.user = new User('','','','');
+      }
+      
+      this.user.username = user.username;
+      this.user.email = user.email;
+      this.user.name = user.name;
 
-    this.userService.patchUserData(data.username, data.name, data.email);
-    // this.user.name = data.name;
-    // this.user.username = data.username;
-    // this.user.email = data.email;
-    console.log(this.user);
-    this.userForm.reset({
-      username : this.user.username,
-      name : this.user.name,
-      email : this.user.email
+
+      this.userForm.reset({
+          username: this.user.username,
+          name: this.user.name,
+          email: this.user.email
+      });
+
+      this.disableChangeFields();
     });
-
-    this.disableChangeFields();
   }
 
   togglaChangeFields() {

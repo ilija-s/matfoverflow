@@ -23,7 +23,7 @@ export class UserService {
     console.log(this.jwtService.getToken());
     const headers: HttpHeaders = new HttpHeaders().append("Authorization", `Bearer ${this.jwtService.getToken()}`);
 
-    const obs: Observable<{token: string}> = this.http.patch<{token: string}>(this.urls.patchUser, body, {headers})
+    const obs: Observable<{token: string}> = this.http.patch<{token: string}>(this.urls.patchUser, body, {headers});
 
     return obs.pipe(
         tap((response: {token: string}) => this.jwtService.setToken(response.token)),
