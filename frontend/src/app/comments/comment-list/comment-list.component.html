@@ -5,13 +5,17 @@
     (commentDeleted)="onCommentDeleted($event)"
     (commentEditing)="onEditingModeChanged($event)">
     </app-comment>
-    <form class="ui reply form">
-        <div class="field">
-          <textarea></textarea>
-        </div>
-        <div class="ui light-blue labeled submit icon button">
-          <i class="icon edit"></i> Add Comment
-        </div>
+    <form class="ui reply form" 
+      [formGroup]="commentForm"
+      (ngSubmit)="postComment(commentForm.value)">
+      <div class="field">
+        <textarea formControlName="content"></textarea>
+      </div>
+      <button class="ui light-blue labeled submit icon button"
+        type="submit" 
+        [disabled]="!commentForm.valid">>
+        <i class="icon edit"></i> Add Comment
+      </button>
     </form>
 </div>
 

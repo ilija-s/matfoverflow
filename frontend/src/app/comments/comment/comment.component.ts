@@ -78,17 +78,17 @@ export class CommentComponent implements OnChanges{
 		this.emitCommentDeleted.emit(this.comment._id);
 	}
 
-	public editComment(edit : {content : string}) {
+	public editComment(form : {content : string}) {
 
-		edit.content = edit.content.trim();
-		if (edit.content.length == 0){
+		form.content = form.content.trim();
+		if (form.content.length == 0){
 			alert("Comment content can non be empty!");
 			return;
 		}
 
-		this.commentService.editComment(this.comment._id, this.comment.authorId, edit.content).subscribe((res: any) => {});
+		this.commentService.editComment(this.comment._id, this.comment.authorId, form.content).subscribe((res: any) => {});
 		this.emitCommentEdited.emit(this.comment._id);
 		this.toggleEditingMode()
-		this.comment.content = edit.content;
+		this.comment.content = form.content;
 	}
 }

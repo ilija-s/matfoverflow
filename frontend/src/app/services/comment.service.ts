@@ -40,4 +40,8 @@ export class CommentService {
 	public editComment(commentId : string, authorId : string, content : string) : Observable<Comment> {
 		return this.http.put<Comment>("http://localhost:4001/comments/" + commentId, {content : content, authorId : authorId});
 	}
+
+	public postComment(questionId : string, authorId : string, authorName: string, content : string) : Observable<Comment> {
+		return this.http.post<Comment>("http://localhost:4001/comments/" + questionId, {authorId : authorId, authorName : authorName, content : content});
+	}
 }

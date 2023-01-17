@@ -1,7 +1,8 @@
-import { Component, Input, OnInit} from '@angular/core';
+import { Component, Input, OnInit, Output} from '@angular/core';
 
 import { Comment } from '../models/comment.model';
 import { CommentService } from 'src/app/services/comment.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
 	selector: 'app-comment-list',
@@ -14,9 +15,14 @@ export class CommentListComponent implements OnInit{
 	@Input('questionId')
 	public questionId: string = "";
 
-	private isEditingModeOn: boolean = false;	
+	public isEditingModeOn: boolean = false;	
+	public commentForm: FormGroup;
 
-	constructor(private commentService : CommentService) {}
+	constructor(private commentService : CommentService, private formBuilder : FormBuilder) {
+		this.commentForm = this.formBuilder.group({
+			content : ["", [Validators.required, Validators.minLength(2)]]
+		})
+	}
 
 	ngOnInit(): void {
 		this.commentService.getComments(this.questionId).subscribe((comments: Comment[]) => {
@@ -44,5 +50,19 @@ export class CommentListComponent implements OnInit{
 	public onEditingModeChanged(isEditingModeOn : boolean) : void {
 		this.isEditingModeOn = isEditingModeOn;
 	}
-}
 
+	public postComment(form : {content : string}) : void {
+		form.content = form.content.trim();
+		if (form.content.length == 0){
+			alert("Comment content can non be empty!");
+			return;
+		}
+
+		this.commentService.postComment(this.questionId, "1148a2d211a47ca32ee1f42f", "gojko33", form.content)
+			.subscribe((comment : Comment) => {
+				this.comments.push(comment);
+			});
+
+		this.commentForm.controls["content"].setValue("");
+	}
+}
