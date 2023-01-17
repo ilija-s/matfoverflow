@@ -1,12 +1,12 @@
 <form class="ui form" [formGroup]="loginForm" (ngSubmit)="login()">
     <div class="required field">
         <label>Username</label>
-        <input type="text" formControlName="username"> 
+        <input type="text" placeholder="Username" formControlName="username"> 
     </div>
 
     <div class="required field">
         <label>Password</label>
-        <input type="password" formControlName="password">  
+        <input type="password" placeholder="Password" formControlName="password">  
     </div>
 
     <button class="ui button" type="submit" style = "background-color: rgb(194, 221, 240); margin: 10px;">

@@ -5,19 +5,19 @@
                 <div class="ui text loader"></div>
             </div>
             <div class = "image">
-                <img [src] = "user.imgUrl" alt = "User's profile picture">
+                <img src = "https://www.seekpng.com/png/detail/966-9665317_placeholder-image-person-jpg.png" alt = "Image">
             </div>
             <div class = "content">
-                <p class = "header">{{ user.name }}</p>
+                <p class = "header">{{ user?.name }}</p>
                 <div class = "description">
-                    {{ user.email }}
+                    {{ user?.email }}
                 </div>
             </div>
         </div> 
     </div>
 
     <div class="twelve wide column ">
-        <button class = "ui button" style = "background-color: rgb(194, 221, 240); margin: 10px;" (click)="enableChangeFields()">Change profile info</button>
+        <button class = "ui button" style = "background-color: rgb(194, 221, 240); margin: 10px;" (click)="togglaChangeFields()">Change profile info</button>
         <form [formGroup]="userForm" (ngSubmit)="onUserFormSubmit()" class="ui form" *ngIf="showChangeFields; else changeUserInfo">
             <div>
                 <label>Username</label>
