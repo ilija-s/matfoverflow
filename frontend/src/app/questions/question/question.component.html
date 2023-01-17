@@ -18,6 +18,5 @@
 			<h4 class="ui dividing header"></h4>
 		</div>
     </div>
-	<app-comment-list [questionId]="question._id"></app-comment-list>
+	<app-comment-list [questionId]="question._id" (answerCountUpdate)="onUpdateAnswerCount($event)"></app-comment-list>
 </div>
-

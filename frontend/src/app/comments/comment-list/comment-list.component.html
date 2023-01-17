@@ -1,5 +1,4 @@
 <div class="ui comments">
-    <h3 class="ui dividing header">Comments</h3>
     <app-comment *ngFor="let comment of comments" 
     [comment]="comment" 
     (commentDeleted)="onCommentDeleted($event)"

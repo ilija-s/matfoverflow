@@ -17,4 +17,8 @@ export class QuestionComponent {
     });
   }
 
+  public onUpdateAnswerCount(answerCount : number) : void {
+    this.question.answers = answerCount;
+  }
+
 }

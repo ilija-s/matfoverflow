@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Output} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 
 import { Comment } from '../models/comment.model';
 import { CommentService } from 'src/app/services/comment.service';
@@ -12,8 +12,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class CommentListComponent implements OnInit{
 	public comments : Comment[] = [];
 
-	@Input('questionId')
+	@Input("questionId")
 	public questionId: string = "";
+
+	@Output("answerCountUpdate")
+	public emitCommentCount : EventEmitter<number> = new EventEmitter<number>();
 
 	public isEditingModeOn: boolean = false;	
 	public commentForm: FormGroup;
@@ -21,13 +24,12 @@ export class CommentListComponent implements OnInit{
 	constructor(private commentService : CommentService, private formBuilder : FormBuilder) {
 		this.commentForm = this.formBuilder.group({
 			content : ["", [Validators.required, Validators.minLength(2)]]
-		})
+		});
 	}
 
 	ngOnInit(): void {
-		this.commentService.getComments(this.questionId).subscribe((comments: Comment[]) => {
-			this.comments = comments;
-		});
+		this.refreshComments();
+
 		setInterval(() => {
 			if (!this.isEditingModeOn) {
 				this.refreshComments();
@@ -35,9 +37,14 @@ export class CommentListComponent implements OnInit{
 		}, 10000);
 	}
 
+	private refreshCommentCount() {
+		this.emitCommentCount.emit(this.comments.length);
+	}
+
 	private refreshComments() {
 		this.commentService.getComments(this.questionId).subscribe((comments: Comment[]) => {
 			this.comments = comments;
+			this.refreshCommentCount();
 		});
 	}
 
@@ -45,6 +52,7 @@ export class CommentListComponent implements OnInit{
 		this.comments = this.comments.filter((comment : Comment) => {
 			return comment._id != commentId;
 		});
+		this.refreshCommentCount();
 	}
 
 	public onEditingModeChanged(isEditingModeOn : boolean) : void {
@@ -62,7 +70,8 @@ export class CommentListComponent implements OnInit{
 			.subscribe((comment : Comment) => {
 				this.comments.push(comment);
 			});
-
+			
 		this.commentForm.controls["content"].setValue("");
+		this.refreshCommentCount();
 	}
 }

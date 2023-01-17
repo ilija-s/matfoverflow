@@ -62,13 +62,13 @@ export class CommentComponent implements OnChanges{
 	}
 
 	public upvote() {
-		this.commentService.upvote(this.comment._id).subscribe((res: any) => {
+		this.commentService.upvote(this.comment._id).subscribe((res: {currentVoteCount : number}) => {
 			this.comment.votes = res.currentVoteCount;
 		});
 	}
 
 	public downvote() {
-		this.commentService.downvote(this.comment._id).subscribe((res: any) => {
+		this.commentService.downvote(this.comment._id).subscribe((res : {currentVoteCount : number}) => {
 			this.comment.votes = res.currentVoteCount;
 		});
 	}
@@ -79,16 +79,16 @@ export class CommentComponent implements OnChanges{
 	}
 
 	public editComment(form : {content : string}) {
-
 		form.content = form.content.trim();
 		if (form.content.length == 0){
 			alert("Comment content can non be empty!");
 			return;
 		}
 
-		this.commentService.editComment(this.comment._id, this.comment.authorId, form.content).subscribe((res: any) => {});
+		this.commentService.editComment(this.comment._id, this.comment.authorId, form.content).subscribe((comment : Comment) => {
+			this.comment = comment;
+		});
 		this.emitCommentEdited.emit(this.comment._id);
-		this.toggleEditingMode()
-		this.comment.content = form.content;
+		this.toggleEditingMode();
 	}
 }
