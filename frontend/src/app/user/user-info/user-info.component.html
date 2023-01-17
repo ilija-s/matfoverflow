@@ -1,7 +1,7 @@
-<app-user-profile *ngIf="user !== undefined; else loginAndRegistration"></app-user-profile>
+<app-user-profile *ngIf="user !== null; else loginAndRegistration"></app-user-profile>
 
 <ng-template #loginAndRegistration>
-    <button class = "ui button" (click)="switchBetweenLoginAndRegistration()" style = "background-color: rgb(194, 221, 240); margin: 10px;">
+    <button class="ui basic blue button" (click)="switchBetweenLoginAndRegistration()" style = "background-color: rgb(194, 221, 240); margin: 10px;">
         Switch to {{ isLogin ? "registration" : "login" }}
     </button>
     <app-login-form *ngIf="isLogin"></app-login-form>

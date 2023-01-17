@@ -9,10 +9,10 @@
         <input type="text" formControlName="title">
     </div>
 
-    <div class="required fluid field">
+    <div class="required fluid field" [ngClass]="{ error: descriptionHasErrors() }">
         <label>Description</label>
         <textarea formControlName="description"></textarea>
     </div>
 
-    <button class="ui button" type="submit" style = "background-color: rgb(194, 221, 240); margin: 10px;">Post your question</button>
+    <button class="ui basic blue button" type="submit" style = "background-color: rgb(194, 221, 240); margin: 10px;">Post your question</button>
 </form>

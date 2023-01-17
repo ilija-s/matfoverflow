@@ -49,6 +49,14 @@ export class CreateQuestionComponent implements OnInit{
     return errors != null;
   }
 
+  public descriptionHasErrors(): boolean {
+    const errors: ValidationErrors | undefined | null = this.createQuestionForm.get("description")?.errors;
+
+    console.log(errors);
+
+    return errors != null;
+  }
+
 
 
   // public addNewQuestion(): void{

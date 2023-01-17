@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login-form',
@@ -19,6 +19,22 @@ export class LoginFormComponent implements OnInit{
    }
 
   ngOnInit(): void {
+  }
+
+  public usernameHasErrors(): boolean {
+    const errors: ValidationErrors | undefined | null = this.loginForm.get("username")?.errors;
+
+    console.log(errors);
+
+    return errors != null;
+  }
+
+  public passwordHasErrors(): boolean {
+    const errors: ValidationErrors | undefined | null = this.loginForm.get("password")?.errors;
+
+    console.log(errors);
+
+    return errors != null;
   }
 
   public login(): void {

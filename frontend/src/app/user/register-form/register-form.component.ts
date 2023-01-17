@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { UserService } from '../services/user.service';
 import { User } from '../models/user.model';
 import { Subscription } from 'rxjs';
@@ -29,6 +29,47 @@ export class RegisterFormComponent implements OnInit {
   ngOnInit(): void {
 
   }
+
+  public usernameHasErrors(): boolean {
+    const errors: ValidationErrors | undefined | null = this.registerForm.get("username")?.errors;
+
+    console.log(errors);
+
+    return errors != null;
+  }
+
+  public passwordHasErrors(): boolean {
+    const errors: ValidationErrors | undefined | null = this.registerForm.get("password")?.errors;
+
+    console.log(errors);
+
+    return errors != null;
+  }
+
+  public nameHasErrors(): boolean {
+    const errors: ValidationErrors | undefined | null = this.registerForm.get("name")?.errors;
+
+    console.log(errors);
+
+    return errors != null;
+  }
+
+  public emailHasErrors(): boolean {
+    const errors: ValidationErrors | undefined | null = this.registerForm.get("email")?.errors;
+
+    console.log(errors);
+
+    return errors != null;
+  }
+
+  public courseHasErrors(): boolean {
+    const errors: ValidationErrors | undefined | null = this.registerForm.get("course")?.errors;
+
+    console.log(errors);
+
+    return errors != null;
+  }
+
   public get username(){
     return this.registerForm.get('username')?.value;
   }
@@ -53,6 +94,8 @@ export class RegisterFormComponent implements OnInit {
         .subscribe((user : User[]) => {
           this.users = user;
           alert(this.users[0]["name"]);
+          this.userService.setUser(user[0])
+          console.log(user[0]);
         });
     }
   }

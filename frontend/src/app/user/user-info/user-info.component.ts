@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { User } from '../models/user.model';
 
 @Component({
@@ -8,11 +8,12 @@ import { User } from '../models/user.model';
 })
 export class UserInfoComponent implements OnInit{
   
-  public user: User | undefined;
+  @Input()
+  public user: User | null  = null;
   public isLogin: boolean = true;
   
   ngOnInit(): void {
-
+    console.log(this.user);
   }
 
   switchBetweenLoginAndRegistration(): void {

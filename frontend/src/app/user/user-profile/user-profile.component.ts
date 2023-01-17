@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { User } from "../models/user.model";
 
@@ -26,6 +26,7 @@ export class UserProfileComponent implements OnInit {
       name: new FormControl(this.user.name, [Validators.min(2)]),
       imgUrl: new FormControl(""),
     });
+    console.log(this.user);
   }
 
   public onUserFormSubmit(): void {
