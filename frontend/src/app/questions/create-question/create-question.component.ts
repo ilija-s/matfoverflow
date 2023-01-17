@@ -44,21 +44,39 @@ export class CreateQuestionComponent implements OnInit{
   }
 
   public onCreateQuestionSubmit(): void {
+    console.log(this.createQuestionForm.value);
+
+    if (this.createQuestionForm.invalid){
+      window.alert('Form is not valid. Please, try again!');
+      return;
+    }
     const title: string = this.createQuestionForm.value['title'];
     const description: string = this.createQuestionForm.value['description'];
     const tags: string[] = this.createQuestionForm.value['tags'];
 
     if (this.user !== null) {
-      const response: any = this.questionService.addNewQuestion(title, description, this.user.username, tags);
-      console.log(response);
+      this.questionService.addNewQuestion(title, description, this.user.username, tags);
     } else {
       window.alert("You need to be logged in to ask a question.");
     }
+
+    this.createQuestionForm.reset({
+        title: "",
+        description: ""
+    });
   }
 
   //TREBA POPRAVITI
   public titleHasErrors(): boolean {
     const errors: ValidationErrors | undefined | null = this.createQuestionForm.get("title")?.errors;
+
+    console.log(errors);
+
+    return errors != null;
+  }
+
+  public descriptionHasErrors(): boolean {
+    const errors: ValidationErrors | undefined | null = this.createQuestionForm.get("description")?.errors;
 
     console.log(errors);
 

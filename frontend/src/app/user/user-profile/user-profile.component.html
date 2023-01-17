@@ -17,7 +17,7 @@
     </div>
 
     <div class="twelve wide column ">
-        <button class = "ui button" style = "background-color: rgb(194, 221, 240); margin: 10px;" (click)="togglaChangeFields()">Change profile info</button>
+        <button class = "ui button" style = "background-color: coral; color: white; margin: 10px;" (click)="togglaChangeFields()">Change profile info</button>
         <form [formGroup]="userForm" (ngSubmit)="onUserFormSubmit()" class="ui form" *ngIf="showChangeFields; else changeUserInfo">
             <div class="required fluid field" [ngClass]="{ error: usernameHasErrors() }">
                 <label>Username</label>
@@ -35,7 +35,7 @@
                 <label>Choose a profile picture</label>
                 <input type="file" formControlName="imgUrl">
             </div>
-            <button class = "ui button" type="submit" style = "background-color: rgb(194, 221, 240); margin: 10px;">Save changes</button>
+            <button class = "ui button" type="submit" style ="background-color: coral; color: white; margin: 10px;">Save changes</button>
         </form>
 
         <ng-template #changeUserInfo>
