@@ -66,7 +66,7 @@
     * `404 Not Found`     - If the comment with given id does not exists.
     * `500 Internal Server Error`
 
-### DELETE /comments/{questionId}
+### DELETE /comments/qustion/{questionId}
 
 * **Description**: Deletes all the comments for question with given id.
 
@@ -76,7 +76,7 @@
     * `401 Unauthorized`  - If user is not a moderator or if request is not sent by question service.
     * `500 Internal Server Error` - If internal server error occurs.
 
-### DELETE /comments/{questionId}/{commentId}
+### DELETE /comments/{commentId}
 
 * **Description**: Deletes the comment with given id.
 
