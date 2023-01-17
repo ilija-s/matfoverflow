@@ -28,6 +28,17 @@ questionsRoute.get("/tags/:tag", async (req, res) => {
     res.json(questions);
 })
 
+questionsRoute.get("/search/:query", async (req, res) => {
+    const query = req.params.query;
+    console.log(query);
+    const questions = await QuestionModel.model.find(
+        { $text: { $search: query }}
+        ).sort( { score: { $meta: "textScore" } } 
+        ).exec();
+
+    res.json(questions);
+})
+
 questionsRoute.post("/", async (req, res) => {
     const { title, description, user, tags } = req.body;
     if (!title || !description || !user) {
