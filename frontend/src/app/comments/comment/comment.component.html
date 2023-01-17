@@ -1,0 +1,33 @@
+<div class="comment">
+  <a class="avatar">
+    <img src="../../../assets/user2.png">
+  </a>
+  <div class="content">
+    <a class="author">{{ comment.authorId }}</a>
+    <div class="metadata">
+      <span class="date">{{ comment.updatedAt }}</span>
+      <button (click)="deleteComment()"><i class="trash icon"></i></button>
+      <button (click)="toggleEditingMode()"><i class="edit icon"></i></button>
+    </div>
+    <div class="rating">
+      <button (click)="upvote()"><i class="thumbs up outline icon"></i></button>
+      <button (click)="downvote()"><i class="thumbs down outline icon"></i></button>
+      <i class="vote">
+        {{ comment.votes }}
+      </i>
+    </div>
+    <div *ngIf="editingMode">
+      <form class="ui reply form">
+        <div class="field">
+          <textarea>{{ comment.content }}</textarea>
+        </div>
+        <div class="ui labeled light-blue submit icon button">
+          <i class="icon edit"></i> Save
+        </div>
+      </form>
+    </div>
+    <div *ngIf="!editingMode" class="text">
+      {{ comment.content }}
+    </div>
+  </div>
+</div>

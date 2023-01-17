@@ -1,0 +1,17 @@
+.vote {
+    margin-left: 10px;
+    padding: 2px;
+    border: 2px solid rgb(100, 221, 240);
+    border-radius: 10px;
+    color: white;
+    background-color: rgb(100, 221, 240);
+    box-sizing: border-box;
+}
+
+.light-blue {
+    background-color: rgb(194, 221, 240);
+}
+
+.light-blue:hover {
+    background-color: rgb(100, 221, 240);
+}
