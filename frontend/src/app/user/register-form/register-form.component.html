@@ -1,25 +1,25 @@
 <form class="ui form" [formGroup]="registerForm" (ngSubmit)="register()">
-    <div class="required field">
+    <div class="required field" [ngClass]="{ error: usernameHasErrors() }">
         <label>Username</label>
         <input type="text" placeholder="Username" formControlName="username"> 
     </div>
 
-    <div class="required field">
+    <div class="required field" [ngClass]="{ error: passwordHasErrors() }">
         <label>Password</label>
         <input type="password" placeholder="Password" formControlName="password">  
     </div>
 
-    <div class="required field">
+    <div class="required field" [ngClass]="{ error: nameHasErrors() }">
         <label>Name</label>
         <input type="text" placeholder="Name" formControlName="name"> 
     </div>
 
-    <div class="required field">
+    <div class="required field" [ngClass]="{ error: emailHasErrors() }">
         <label>Email</label>
         <input type="email" placeholder="Email" formControlName="email"> 
     </div>
 
-    <div class="required field">
+    <div class="field">
         <label>Course</label>
         <input type="text" placeholder="Course" formControlName="course"> 
     </div>

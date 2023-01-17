@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { User } from '../models/user.model';
@@ -43,6 +43,38 @@ export class RegisterFormComponent implements OnInit {
     this.sub = obs.subscribe((user: User | null) => {
       console.log(user)
     });
+  }
+
+  public usernameHasErrors(): boolean {
+    const errors: ValidationErrors | undefined | null = this.registerForm.get("username")?.errors;
+
+    console.log(errors);
+
+    return errors != null;
+  }
+
+  public nameHasErrors(): boolean {
+    const errors: ValidationErrors | undefined | null = this.registerForm.get("name")?.errors;
+
+    console.log(errors);
+
+    return errors != null;
+  }
+
+  public emailHasErrors(): boolean {
+    const errors: ValidationErrors | undefined | null = this.registerForm.get("email")?.errors;
+
+    console.log(errors);
+
+    return errors != null;
+  }
+
+  public passwordHasErrors(): boolean {
+    const errors: ValidationErrors | undefined | null = this.registerForm.get("password")?.errors;
+
+    console.log(errors);
+
+    return errors != null;
   }
 
 }
