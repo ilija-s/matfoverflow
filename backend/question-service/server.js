@@ -8,7 +8,7 @@ const questionRouter = require("./routes/question");
 const PORT = 4000;
 const HOST_NAME = "localhost";
 
-mongoose.connect("mongodb://localhost:27017/QuestionsDB", {
+mongoose.connect("mongodb://mongo-db:27017/QuestionsDB", {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });
